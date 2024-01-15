@@ -6,6 +6,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranscribe } from "../hooks/useTranscribe";
 import * as Notifications from "expo-notifications";
 import * as FileSystem from "expo-file-system";
+import RNFetchBlob from "rn-fetch-blob";
 
 export default function ShareIntent() {
   const router = useRouter();
@@ -15,31 +16,33 @@ export default function ShareIntent() {
   };
   const [transcribeText, setTranscribeText] = useState<string | null>(null);
   const transcribe = useTranscribe();
-  const [transcribing, setTranscribing] = useState(true);
+  const [transcribing, setTranscribing] = useState(false);
 
   useEffect(() => {
-    if (shareIntent.data === "string" || shareIntent.data?.[0] === "string") {
-      const uri =
-        shareIntent.data === "string" ? shareIntent.data : shareIntent.data[0];
-      const uriComponents = uri.split("/");
-      const fileNameAndExtension = uriComponents[uriComponents.length - 1];
-      const filePath = `${FileSystem.cacheDirectory}/${fileNameAndExtension}`;
-      FileSystem.downloadAsync(uri, filePath);
-      transcribe(filePath)
-        .then((text) => {
-          setTranscribeText(text);
-          setTranscribing(false);
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: `Transcription complete!`,
-              body: text,
-            },
-            trigger: null, // Display immediately
+    const uri =
+      shareIntent.data === "string" ? shareIntent.data : shareIntent.data[0];
+    if (uri) {
+      console.log(uri)
+      RNFetchBlob.fs.stat(uri).then((filePath) => {
+        console.log(filePath);
+
+        setTranscribing(true);
+        transcribe(filePath.path)
+          .then((text) => {
+            setTranscribeText(text);
+            setTranscribing(false);
+            Notifications.scheduleNotificationAsync({
+              content: {
+                title: `${filePath.filename} transcription complete!`,
+                body: text,
+              },
+              trigger: null, // Display immediately
+            });
+          })
+          .catch((err: any) => {
+            setTranscribeText(`Error: ${String(err)}`);
           });
-        })
-        .catch((err: any) => {
-          setTranscribeText(`Error: ${String(err)}`);
-        });
+      });
     }
   });
 
@@ -54,7 +57,7 @@ export default function ShareIntent() {
       {!!shareIntent && (
         <Text style={styles.gap}>{JSON.stringify(shareIntent)}</Text>
       )}
-      
+
       {!!shareIntent && (
         <Button onPress={() => router.replace("/")} title="Go home" />
       )}

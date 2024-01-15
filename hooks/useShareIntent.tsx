@@ -19,18 +19,21 @@ export default function useShareIntent() {
     if (!item) {
       return;
     }
+    if (item.data !== sharedData) {
+      const { mimeType, data, extraData } = item;
 
-    const { mimeType, data, extraData } = item;
-
-    setSharedData(typeof data === "string" ? data : data[0]);
-    setSharedMimeType(mimeType);
-    // You can receive extra data from your custom Share View
-    console.log(extraData);
+      setSharedData(typeof data === "string" ? data : data[0]);
+      setSharedMimeType(mimeType);
+      // You can receive extra data from your custom Share View
+      console.log(extraData);
+    }
   }, []);
 
   useEffect(() => {
-    ShareMenu.getInitialShare(handleShare);
-  }, []);
+    setInterval(() => {
+      ShareMenu.getSharedText(handleShare);
+    }, 100);
+  });
 
   return {
     shareIntent: { data: sharedData, mimetype: sharedMimeType },

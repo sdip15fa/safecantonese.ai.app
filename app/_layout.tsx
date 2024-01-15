@@ -10,7 +10,7 @@ export default function Layout() {
   const { shareIntent, resetShareIntent } = useShareIntent();
 
   useEffect(() => {
-    if (shareIntent) {
+    if (shareIntent?.data) {
       router.replace({ pathname: "shareintent", params: shareIntent });
       resetShareIntent();
     }

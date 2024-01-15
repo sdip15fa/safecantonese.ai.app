@@ -6,7 +6,6 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "prebuild": false
     },
     "preview": {
       "distribution": "internal"

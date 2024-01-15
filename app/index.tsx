@@ -1,6 +1,5 @@
-import { useEffect } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import useShareIntent from "../hooks/useShareIntent";
 import useModelDownload from "../hooks/useDownloadModel";
 
 export default function Page() {
