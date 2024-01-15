@@ -13,22 +13,6 @@
       "backgroundColor": "#ffffff"
     },
     "plugins": [
-      [
-        "expo-config-plugin-ios-share-extension",
-        {
-          "activationRules": {
-            "NSExtensionActivationSupportsAudioWithMaxCount": 1
-          }
-        }
-      ],
-      [
-        "./plugins/withAndroidShareExtension/index",
-        {
-          "androidIntentFilters": [
-            "audio/*"
-          ]
-        }
-      ],
       "expo-router",
       [
         "expo-av",

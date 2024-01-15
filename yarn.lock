@@ -1267,7 +1267,7 @@
     node-forge "^1.2.1"
     nullthrows "^1.1.1"
 
-"@expo/config-plugins@7.2.5", "@expo/config-plugins@^5.0.1", "@expo/config-plugins@~7.2.0", "@expo/config-plugins@~7.2.2":
+"@expo/config-plugins@7.2.5", "@expo/config-plugins@~7.2.0", "@expo/config-plugins@~7.2.2":
   version "7.2.5"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-7.2.5.tgz#b15f22878975fdc4ddcfa8cdc971937ddc4c0249"
   integrity sha512-w+5ccu1IxBHgyQk9CPFKLZOk8yZQEyTjbJwOzESK1eR7QwosbcsLkN1c1WWUZYiCXwORu3UTwJYll4+X2xxJhQ==
@@ -2095,6 +2095,11 @@
   version "6.9.11"
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.11.tgz#208d8a30bc507bd82e03ada29e4732ea46a6bbda"
   integrity sha512-oGk0gmhnEJK4Yyk+oI7EfXsLayXatCWPHary1MtcmbAifkobT9cM9yutG/hZKIseOU0MqbIwQ/u2nn/Gb+ltuQ==
+
+"@types/react-native-share-menu@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@types/react-native-share-menu/-/react-native-share-menu-5.0.5.tgz#790c635ed991fb1541abce078c3d326369f204d3"
+  integrity sha512-RhJO1UYSbS9HAjJdbpkSs7seXUopuE8O7dXNFweo0bnA/zrUamggLhCKzBmYwyYQQ5D2NPC69G3eBI44gQN5MA==
 
 "@types/react@~18.2.14":
   version "18.2.47"
@@ -3350,14 +3355,6 @@ expo-av@~13.4.1:
   version "13.4.1"
   resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-13.4.1.tgz#83029b3202e64bf060f0a7a24591d93bf7ab728c"
   integrity sha512-0K8QEFzZeNGrppzYUs8wOtjOyPPkxzlVYbEHM6WzIQOG1uYYNOJkJB3aQHVFXHmz+AzoHwMrUjcschofwaMNeg==
-
-expo-config-plugin-ios-share-extension@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/expo-config-plugin-ios-share-extension/-/expo-config-plugin-ios-share-extension-0.0.4.tgz#760fe8d397d465f6af73702036a8c12146c67821"
-  integrity sha512-M/EMG0GiYtqkS/MOu7UA6qg2BHjl9zQesKdvxW2OiBl4xUTSDa4uIRMybN4O4yAJE9pwe0KeQbuS/ORnCZtjMg==
-  dependencies:
-    "@expo/config-plugins" "^5.0.1"
-    xcode "^3.0.1"
 
 expo-constants@~14.4.2:
   version "14.4.2"
@@ -5865,11 +5862,6 @@ react-native-gesture-handler@~2.12.0:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-react-native-receive-sharing-intent@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-receive-sharing-intent/-/react-native-receive-sharing-intent-2.0.0.tgz#0d835387976e2343f85f0172522e83233a09c0d9"
-  integrity sha512-JFSO8mZm/hU0EJQYhC5z2m1iiMwJhD9CQ/hYQ8t1UQ9mQynoS/yo+hjX2T6hFXa8mtzlwO/BFwKZjBaVNPdWuw==
-
 react-native-safe-area-context@4.6.3:
   version "4.6.3"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.6.3.tgz#f06cfea05b1c4b018aa9758667a109f619c62b55"
@@ -5882,6 +5874,11 @@ react-native-screens@~3.22.0:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-share-menu@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-share-menu/-/react-native-share-menu-6.0.0.tgz#0398dd4537ca1138b774fcbff9b05a88c8329cf6"
+  integrity sha512-KdmRnqjI/B2MigSxGmhbYJ3WMJxKXj+0c47ANcVZ/PTzc2vtz6d1r4KQJgkBImXgNC+vowpuD2UGdPllxadr2A==
 
 react-native@0.72.6:
   version "0.72.6"
