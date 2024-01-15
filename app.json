@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "safecantonese.ai",
-    "slug": "safecantonese.ai",
+    "slug": "safecantonese-ai",
+    "scheme": "me.wcyat.safecantoneseai",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,20 +12,75 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [
+      [
+        "expo-config-plugin-ios-share-extension",
+        {
+          "activationRules": {
+            "NSExtensionActivationSupportsAudioWithMaxCount": 1
+          }
+        }
+      ],
+      [
+        "./plugins/withAndroidShareExtension/index",
+        {
+          "androidIntentFilters": [
+            "audio/*"
+          ]
+        }
+      ],
+      "expo-router",
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow safecantonese.ai to access your microphone."
+        }
+      ],
+      "./plugins/withProguardRules"
+    ],
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "me.wcyat.safecantoneseai"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ],
+      "package": "me.wcyat.safecantoneseai"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6ae18997-c601-47b6-9014-ad87871aef31",
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "targetName": "ShareExtension",
+                  "bundleIdentifier": "undefined.share-extension",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.undefined"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }

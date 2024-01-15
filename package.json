@@ -1,23 +1,44 @@
 {
   "name": "safecantonese.ai",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "expo-router/entry",
+  "license": "MIT",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "1.18.2",
     "expo": "~49.0.15",
+    "expo-av": "~13.4.1",
+    "expo-config-plugin-ios-share-extension": "^0.0.4",
+    "expo-constants": "~14.4.2",
+    "expo-dev-client": "~2.4.12",
+    "expo-file-system": "~15.4.5",
+    "expo-linking": "~5.0.2",
+    "expo-notifications": "~0.20.1",
+    "expo-router": "^2.0.0",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
-    "react-native": "0.72.6"
+    "react-native": "0.72.6",
+    "react-native-gesture-handler": "~2.12.0",
+    "react-native-receive-sharing-intent": "^2.0.0",
+    "react-native-safe-area-context": "4.6.3",
+    "react-native-screens": "~3.22.0",
+    "whisper.rn": "^0.3.9",
+    "expo-splash-screen": "~0.20.5"
+  },
+  "resolutions": {
+    "@expo/config-plugins": "~7.2.2",
+    "react-refresh": "~0.14.0",
+    "wrap-ansi": "7.0.0",
+    "string-width": "4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.14",
     "typescript": "^5.1.3"
-  },
-  "private": true
+  }
 }
