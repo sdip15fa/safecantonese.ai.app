@@ -12,7 +12,12 @@
   "dependencies": {
     "@config-plugins/ffmpeg-kit-react-native": "^6.0.0",
     "@react-native-async-storage/async-storage": "1.18.2",
+    "@react-native-community/blur": "^4.3.2",
+    "@react-native-community/datetimepicker": "^7.6.2",
+    "@react-native-community/netinfo": "^11.2.1",
+    "@react-native-picker/picker": "^2.6.1",
     "@types/react-native-share-menu": "^5.0.5",
+    "@types/react-native-vector-icons": "^6.4.18",
     "expo": "~49.0.15",
     "expo-av": "~13.4.1",
     "expo-build-properties": "^0.8.3",
@@ -37,6 +42,7 @@
     "react-native-splash-screen": "^3.3.0",
     "react-native-ui-lib": "^7.14.4",
     "react-native-uuid": "^2.0.1",
+    "react-native-vector-icons": "^10.0.3",
     "whisper.rn": "^0.3.9"
   },
   "resolutions": {

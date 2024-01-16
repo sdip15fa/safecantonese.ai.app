@@ -54,23 +54,10 @@ export default function ShareIntent() {
           });
       });
     }
-  }, [shareIntent]);
+  }, [shareIntent, transcribe]);
 
   return (
     <View style={styles.container}>
-      {!shareIntent && <Text>No Share intent detected</Text>}
-      {!!shareIntent && (
-        <Text style={[styles.gap]} text20>
-          Share audios from any application!
-        </Text>
-      )}
-      {!!shareIntent && (
-        <Text style={styles.gap}>{JSON.stringify(shareIntent)}</Text>
-      )}
-
-      {!!shareIntent && (
-        <Button onPress={() => router.replace("/")} label="Go home" />
-      )}
       {
         <>
           <Text>Transcribed text:</Text>
@@ -78,7 +65,8 @@ export default function ShareIntent() {
         </>
       }
       {transcribing && <Text>Transcribing...</Text>}
-      <StatusBar style="auto" />
+
+      <Button onPress={() => router.replace("/")} label="Go home" />
     </View>
   );
 }

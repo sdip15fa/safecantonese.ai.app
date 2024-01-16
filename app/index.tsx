@@ -1,9 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import useModelDownload from "../hooks/useDownloadModel";
+import { Text, View } from "react-native-ui-lib";
+import { StyleSheet } from "react-native";
 
 export default function Page() {
-  useModelDownload()
   return (
     <View style={styles.container}>
       <View style={styles.main}>

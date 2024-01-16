@@ -1,59 +1,79 @@
 import { TranscribeFileOptions, initWhisper } from "whisper.rn";
 import * as FileSystem from "expo-file-system";
-import useModelDownload from "./useDownloadModel";
 import { FFmpegKit } from "ffmpeg-kit-react-native";
+import useModels from "./useModels";
+import { useCallback, useState } from "react";
 
 export function useTranscribe() {
-  useModelDownload();
-  return async function transcribe(sampleFilePath: string): Promise<string> {
-    const modelPath = `${FileSystem.documentDirectory}ggml-model-q5_0.bin`;
-    const modelInfo = await FileSystem.getInfoAsync(modelPath);
+  const models = useModels();
+  const [segments, setSegMents] = useState([]);
+  const [result, setResult] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [transcribing, setTranscribing] = useState(false);
 
-    if (!modelInfo.exists) {
-      throw "Model downloading. Try again later.";
-    }
+  const transcribe = useCallback(
+    async (sampleFilePath: string) => {
+      console.log("models", models);
+      while (!models) {
+        (await new Promise((resolve) => setTimeout(resolve, 50))) as any;
+      }
+      console.log("models", models);
+      const model =
+        models.find((m) => m.selected) ||
+        models.find((m) => m.downloadStatus?.completed);
 
-    const options: TranscribeFileOptions = {
-      language: "zh",
-      onProgress: (progress: number) => {
-        console.log("progress: ", progress);
-      },
-      onNewSegments: (segment) => {
-        console.log("new segment", segment);
-      },
-    };
+      if (!model) {
+        throw "No model available!";
+      }
 
-    console.log("converting to 16kHz wav");
+      const options: TranscribeFileOptions = {
+        language: "zh",
+        onProgress: (progress: number) => {
+          console.log("progress: ", progress);
+        },
+        onNewSegments: (segment) => {
+          console.log("new segment", segment);
+        },
+      };
 
-    const splitFilePath = sampleFilePath.split(".");
-    splitFilePath.pop();
-    const newFilePath = splitFilePath.join(".") + ".wav";
+      console.log("converting to 16kHz wav");
 
-    console.log("running ffmpeg");
-    try {
-      await FFmpegKit.execute(
-        `-i ${sampleFilePath} -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
-      );
-      console.log(newFilePath, await FileSystem.getInfoAsync(`file://${newFilePath}`));
-    } catch {
-      throw "ffmpeg failed";
-    }
+      const splitFilePath = sampleFilePath.split(".");
+      splitFilePath.pop();
+      const newFilePath = splitFilePath.join(".") + ".wav";
 
-    console.log("start init model");
-    const whisperContext = await initWhisper({
-      filePath: modelPath,
-    });
-    console.log("start transcribe");
-    const { stop, promise } = whisperContext.transcribe(
-      newFilePath,
-      options
-    );
+      console.log("running ffmpeg");
+      try {
+        await FFmpegKit.execute(
+          `-i ${sampleFilePath} -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
+        );
+        console.log(
+          newFilePath,
+          await FileSystem.getInfoAsync(`file://${newFilePath}`)
+        );
+      } catch {
+        throw "ffmpeg failed";
+      }
 
-    const results = await promise;
-    console.log("result: ", JSON.stringify(results));
+      if (!model.downloadStatus?.path) {
+        throw "path undefined";
+      }
 
-    return results.result;
+      console.log("start init model");
+      const whisperContext = await initWhisper({
+        filePath: model.downloadStatus?.path,
+      });
+      console.log("start transcribe");
+      const { stop, promise } = whisperContext.transcribe(newFilePath, options);
 
-    // result: (The inference text result from audio file)
-  };
+      const results = await promise;
+      console.log("result: ", JSON.stringify(results));
+
+      return results.result;
+
+      // result: (The inference text result from audio file)
+    },
+    [models]
+  );
+  return transcribe;
 }
