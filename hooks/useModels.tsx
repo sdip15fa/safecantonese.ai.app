@@ -3,6 +3,37 @@ import RNFS from "react-native-fs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
 
+export const ModelsMeta = [
+  {
+    name: "whisper-small-yue",
+    downloadUrl:
+      "https://huggingface.co/wcyat/whisper-small-yue/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+    description:
+      "Performs well with short audios. Long audios may result in chaotic output. (datasets: common-voice/yue)",
+  },
+  {
+    name: "whisper-small-yue-mdcc",
+    downloadUrl:
+      "https://huggingface.co/wcyat/whisper-small-yue-mdcc/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+    description:
+      "Performs well with short and long audios. May omit punctuations. (datasets: common-voice/yue, mdcc)",
+  },
+  {
+    name: "whisper-small-yue-hk",
+    downloadUrl:
+      "https://huggingface.co/wcyat/whisper-small-yue-hk-retrained/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+    description:
+      "Performs well with short audios. Long audios may result in chaotic output. (datasets: common-voice/yue, common-voice/zh-hk)",
+  },
+  {
+    name: "whisper-small-yue-hk-mdcc",
+    downloadUrl:
+      "https://huggingface.co/wcyat/whisper-small-yue-hk-mdcc-retrained/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+    description:
+      "Performs well with long audios. May omit punctuations. (datasets: common-voice/yue, common-voice/zh-hk, mdcc)",
+  },
+] as Model[];
+
 export interface Model {
   name: string;
   downloadUrl: string;
@@ -27,38 +58,10 @@ export default function useModels() {
   useEffect(() => {
     (async () => {
       if (!models) {
-        const initModels = (JSON.parse(
-          (await AsyncStorage.getItem("models")) || "null"
-        ) as Model[] | null) || [
-          {
-            name: "whisper-small-yue",
-            downloadUrl:
-              "https://huggingface.co/wcyat/whisper-small-yue/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
-            description:
-              "Optimized for spoken Hong Kong Cantonese (dataset: common-voice/yue). Performs well with short audio files. Long audios may result in chaotic output.",
-          },
-          {
-            name: "whisper-small-yue-mdcc",
-            downloadUrl:
-              "https://huggingface.co/wcyat/whisper-small-yue-mdcc/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
-            description:
-              "Optimized for spoken Hong Kong Cantonese (datasets: common-voice/yue, mdcc). Performs well with short and long audio files. May omit punctuations.",
-          },
-          {
-            name: "whisper-small-yue-hk",
-            downloadUrl:
-              "https://huggingface.co/wcyat/whisper-small-yue-hk-retrained/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
-            description:
-              "Optimized and probably most accurate for spoken Hong Kong Cantonese (datasets: common-voice/yue, common-voice/zh-hk). Performs well with short audios only. Long audios may result in chaotic output.",
-          },
-          {
-            name: "whisper-small-yue-hk-mdcc",
-            downloadUrl:
-              "https://huggingface.co/wcyat/whisper-small-yue-hk-mdcc-retrained/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
-            description:
-              "Optimized for spoken Hong Kong Cantonese (datasets: common-voice/yue, common-voice/zh-hk, common-voice/mdcc). Performs well with long audios. May omit punctuations.",
-          },
-        ];
+        const initModels =
+          (JSON.parse((await AsyncStorage.getItem("models")) || "null") as
+            | Model[]
+            | null) || ModelsMeta;
         for (let i = 0; i < initModels.length; i++) {
           if (
             initModels[i].downloadStatus &&
@@ -68,6 +71,16 @@ export default function useModels() {
               ...initModels[i].downloadStatus,
               downloading: false,
               progress: 0,
+            };
+          }
+          const metadata = ModelsMeta.find(
+            (v) => v.name === initModels[i].name
+          );
+          if (metadata) {
+            initModels[i] = {
+              ...initModels[i],
+              description: metadata.description,
+              downloadUrl: metadata.downloadUrl
             };
           }
         }

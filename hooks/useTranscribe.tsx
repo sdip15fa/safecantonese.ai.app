@@ -1,4 +1,9 @@
-import { TranscribeFileOptions, initWhisper } from "whisper.rn";
+import {
+  TranscribeFileOptions,
+  TranscribeNewSegmentsResult,
+  TranscribeResult,
+  initWhisper,
+} from "whisper.rn";
 import * as FileSystem from "expo-file-system";
 import { FFmpegKit } from "ffmpeg-kit-react-native";
 import useModels from "./useModels";
@@ -6,18 +11,24 @@ import { useCallback, useState } from "react";
 
 export function useTranscribe() {
   const models = useModels();
-  const [segments, setSegMents] = useState([]);
-  const [result, setResult] = useState(null);
+  const [segments, setSegMents] = useState<TranscribeNewSegmentsResult | null>(
+    null
+  );
+  const [result, setResult] = useState<TranscribeResult | null>(null);
   const [progress, setProgress] = useState(0);
   const [transcribing, setTranscribing] = useState(false);
 
   const transcribe = useCallback(
     async (sampleFilePath: string) => {
-      console.log("models", models);
       while (!models) {
         (await new Promise((resolve) => setTimeout(resolve, 50))) as any;
       }
-      console.log("models", models);
+
+      setSegMents(null);
+      setResult(null);
+      setProgress(0);
+      setTranscribing(true);
+
       const model =
         models.find((m) => m.selected) ||
         models.find((m) => m.downloadStatus?.completed);
@@ -26,23 +37,10 @@ export function useTranscribe() {
         throw "No model available!";
       }
 
-      const options: TranscribeFileOptions = {
-        language: "zh",
-        onProgress: (progress: number) => {
-          console.log("progress: ", progress);
-        },
-        onNewSegments: (segment) => {
-          console.log("new segment", segment);
-        },
-      };
-
-      console.log("converting to 16kHz wav");
-
       const splitFilePath = sampleFilePath.split(".");
       splitFilePath.pop();
       const newFilePath = splitFilePath.join(".") + ".wav";
 
-      console.log("running ffmpeg");
       try {
         await FFmpegKit.execute(
           `-i ${sampleFilePath} -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
@@ -59,21 +57,31 @@ export function useTranscribe() {
         throw "path undefined";
       }
 
-      console.log("start init model");
+      const options: TranscribeFileOptions = {
+        language: "zh",
+        onProgress: (progress: number) => {
+          console.log(progress)
+          setProgress(progress);
+          
+        },
+        onNewSegments: (segments) => {
+          setSegMents(segments);
+        },
+      };
+
       const whisperContext = await initWhisper({
         filePath: model.downloadStatus?.path,
       });
-      console.log("start transcribe");
       const { stop, promise } = whisperContext.transcribe(newFilePath, options);
 
       const results = await promise;
-      console.log("result: ", JSON.stringify(results));
 
-      return results.result;
+      setResult(results);
+      setTranscribing(false);
 
       // result: (The inference text result from audio file)
     },
     [models]
   );
-  return transcribe;
+  return { transcribe, result, transcribing, setTranscribing, segments, progress };
 }
