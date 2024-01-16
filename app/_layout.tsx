@@ -33,23 +33,28 @@ export default function Layout() {
           }}
         />
         <Tabs.Screen
-          // Name of the route to hide.
           name="index"
           options={{
-            // This tab will no longer show up in the tab bar.
             headerTitle: "Home - safecantonese.ai",
             title: "Home",
             tabBarIcon: (props) => <Icon name="home" {...props} />,
           }}
         />
         <Tabs.Screen
-          // Name of the route to hide.
           name="models"
           options={{
-            // This tab will no longer show up in the tab bar.
             headerTitle: "Models - safecantonese.ai",
             title: "Models",
             tabBarIcon: (props) => <Icon name="gears" {...props} />,
+          }}
+        />
+        <Tabs.Screen
+          name="about"
+          options={{
+            // This tab will no longer show up in the tab bar.
+            headerTitle: "About - safecantonese.ai",
+            title: "About",
+            tabBarIcon: (props) => <Icon name="info" {...props} />,
           }}
         />
       </Tabs>
