@@ -20,11 +20,15 @@
           "microphonePermission": "Allow safecantonese.ai to access your microphone."
         }
       ],
-      "./plugins/withProguardRules"
+      "./plugins/withProguardRules",
+      [
+        "@config-plugins/ffmpeg-kit-react-native",
+        {
+          "package": "audio"
+        }
+      ]
     ],
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "me.wcyat.safecantoneseai"
@@ -55,9 +59,7 @@
                   "targetName": "ShareExtension",
                   "bundleIdentifier": "undefined.share-extension",
                   "entitlements": {
-                    "com.apple.security.application-groups": [
-                      "group.undefined"
-                    ]
+                    "com.apple.security.application-groups": ["group.undefined"]
                   }
                 }
               ]

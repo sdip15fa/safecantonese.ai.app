@@ -21,9 +21,12 @@ export default function useShareIntent() {
     }
     if (item.data !== sharedData) {
       const { mimeType, data, extraData } = item;
+      const newData = typeof data === "string" ? data : data[0];
 
-      setSharedData(typeof data === "string" ? data : data[0]);
-      setSharedMimeType(mimeType);
+      if (newData !== sharedData) {
+        setSharedData(newData);
+        setSharedMimeType(mimeType);
+      }
       // You can receive extra data from your custom Share View
       console.log(extraData);
     }
