@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import {
   Button,
@@ -8,11 +8,11 @@ import {
   Text,
   View,
 } from "react-native-ui-lib";
-import useModels from "../hooks/useModels";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AppContext } from "../context/AppContext";
 
 export default function Models() {
-  const models = useModels();
+  const { models } = useContext(AppContext);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,7 +26,6 @@ export default function Models() {
                 <Card
                   key={index}
                   flex
-                  onPress={() => console.log("pressed")}
                   style={{
                     margin: 10,
                   }}

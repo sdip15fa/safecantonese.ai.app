@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AppState } from "react-native";
+import { useCallback, useEffect, useState } from "react";
 import ShareMenu from "react-native-share-menu";
 
 export interface ShareData {
@@ -9,11 +8,9 @@ export interface ShareData {
 }
 
 export default function useShareIntent() {
-  const appState = useRef(AppState.currentState);
-  const [shareIntent, setShareIntent] = useState<ShareData | null>(null);
   const [sharedData, setSharedData] = useState<string | null>(null);
   const [sharedMimeType, setSharedMimeType] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [extraData, setExtraData] = useState<object | undefined>(undefined);
 
   const handleShare = useCallback((item?: ShareData) => {
     if (!item) {
@@ -26,21 +23,19 @@ export default function useShareIntent() {
       if (newData !== sharedData) {
         setSharedData(newData);
         setSharedMimeType(mimeType);
+        setExtraData(extraData);
       }
       // You can receive extra data from your custom Share View
-      console.log(extraData);
     }
   }, []);
 
   useEffect(() => {
-    setInterval(() => {
-      ShareMenu.getSharedText(handleShare);
-    }, 100);
-  });
+    ShareMenu.addNewShareListener(handleShare);
+  }, []);
 
   return {
-    shareIntent: { data: sharedData, mimetype: sharedMimeType },
-    resetShareIntent: () => setShareIntent(null),
-    error,
+    data: sharedData,
+    mimetype: sharedMimeType,
+    extraData,
   };
 }

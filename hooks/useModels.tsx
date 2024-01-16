@@ -80,7 +80,7 @@ export default function useModels() {
             initModels[i] = {
               ...initModels[i],
               description: metadata.description,
-              downloadUrl: metadata.downloadUrl
+              downloadUrl: metadata.downloadUrl,
             };
           }
         }
@@ -105,9 +105,7 @@ export default function useModels() {
   useEffect(() => {
     if (
       models &&
-      !models.every(
-        (model) => model.download && model.delete // && model.select
-      )
+      !models.every((model) => model.download && model.delete && model.select)
     ) {
       setModels(addFunctions());
     }
@@ -157,6 +155,7 @@ export default function useModels() {
               await RNFS.unlink(model.downloadStatus?.path);
             } catch {}
             delete models[index].downloadStatus;
+            delete models[index].selected;
             setModels([...models]);
           }
         };

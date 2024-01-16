@@ -4,13 +4,15 @@ import {
   TranscribeResult,
   initWhisper,
 } from "whisper.rn";
-import * as FileSystem from "expo-file-system";
 import { FFmpegKit } from "ffmpeg-kit-react-native";
-import useModels from "./useModels";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
+import { HistoryItem } from "./useHistory";
+import uuid from "react-native-uuid";
+import { AppContext } from "../context/AppContext";
 
 export function useTranscribe() {
-  const models = useModels();
+  const { models } = useContext(AppContext);
+  const { history, setHistory } = useContext(AppContext).history;
   const [segments, setSegMents] = useState<TranscribeNewSegmentsResult | null>(
     null
   );
@@ -19,8 +21,8 @@ export function useTranscribe() {
   const [transcribing, setTranscribing] = useState(false);
 
   const transcribe = useCallback(
-    async (sampleFilePath: string) => {
-      while (!models) {
+    async (sampleFilePath: string, shareData?: string) => {
+      while (!models || !history) {
         (await new Promise((resolve) => setTimeout(resolve, 50))) as any;
       }
 
@@ -45,10 +47,6 @@ export function useTranscribe() {
         await FFmpegKit.execute(
           `-i ${sampleFilePath} -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
         );
-        console.log(
-          newFilePath,
-          await FileSystem.getInfoAsync(`file://${newFilePath}`)
-        );
       } catch {
         throw "ffmpeg failed";
       }
@@ -60,9 +58,7 @@ export function useTranscribe() {
       const options: TranscribeFileOptions = {
         language: "zh",
         onProgress: (progress: number) => {
-          console.log(progress)
           setProgress(progress);
-          
         },
         onNewSegments: (segments) => {
           setSegMents(segments);
@@ -72,16 +68,41 @@ export function useTranscribe() {
       const whisperContext = await initWhisper({
         filePath: model.downloadStatus?.path,
       });
+
+      const recordId = String(uuid.v4());
+      const record: HistoryItem = {
+        id: recordId,
+        sampleFilePath,
+        shareData,
+        date: new Date(),
+        pending: true,
+        model: model.name,
+      };
+
+      setHistory([record, ...history]);
+
       const { stop, promise } = whisperContext.transcribe(newFilePath, options);
 
       const results = await promise;
 
       setResult(results);
       setTranscribing(false);
+      record.pending = false;
+      record.result = results;
+
+      // history isn't changed so just do it again
+      setHistory([record, ...history]);
 
       // result: (The inference text result from audio file)
     },
-    [models]
+    [models, history, setHistory]
   );
-  return { transcribe, result, transcribing, setTranscribing, segments, progress };
+  return {
+    transcribe: models && history ? transcribe : null,
+    result,
+    transcribing,
+    setTranscribing,
+    segments,
+    progress,
+  };
 }
