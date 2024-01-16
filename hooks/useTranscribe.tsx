@@ -56,7 +56,7 @@ export function useTranscribe() {
       }
 
       const options: TranscribeFileOptions = {
-        language: "zh",
+        language: model.en_ok ? "en" : "zh",
         onProgress: (progress: number) => {
           setProgress(progress);
         },

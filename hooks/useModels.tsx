@@ -17,6 +17,7 @@ export const ModelsMeta = [
       "https://huggingface.co/wcyat/whisper-small-yue-mdcc/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
     description:
       "Performs well with short and long audios. May omit punctuations. (datasets: common-voice/yue, mdcc)",
+    en_ok: true,
   },
   {
     name: "whisper-small-yue-hk",
@@ -31,6 +32,7 @@ export const ModelsMeta = [
       "https://huggingface.co/wcyat/whisper-small-yue-hk-mdcc-retrained/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
     description:
       "Performs well with long audios. May omit punctuations. (datasets: common-voice/yue, common-voice/zh-hk, mdcc)",
+    en_ok: true,
   },
 ] as Model[];
 
@@ -38,6 +40,7 @@ export interface Model {
   name: string;
   downloadUrl: string;
   description: string;
+  en_ok?: boolean;
   downloadStatus?: {
     completed?: boolean;
     progress?: number;

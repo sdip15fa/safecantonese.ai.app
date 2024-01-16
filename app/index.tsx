@@ -4,6 +4,7 @@ import { FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import humanizeDuration from "humanize-duration";
 import { AppContext } from "../context/AppContext";
+import * as Clipboard from "expo-clipboard";
 
 export default function Page() {
   const { history, setHistory } = useContext(AppContext).history;
@@ -75,6 +76,15 @@ export default function Page() {
                     margin: 10,
                   }}
                 >
+                  <Button
+                    label="Copy"
+                    onPress={() => {
+                      if (item.result?.result) {
+                        Clipboard.setStringAsync(item.result?.result);
+                      }
+                    }}
+                    style={{ marginRight: 10 }}
+                  />
                   <Button
                     label="Delete"
                     onPress={() => {
