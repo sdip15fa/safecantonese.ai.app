@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Colors, ProgressBar, Text } from "react-native-ui-lib";
+import {
+  Button,
+  Colors,
+  Dialog,
+  PanningProvider,
+  ProgressBar,
+  Text,
+} from "react-native-ui-lib";
 import { StyleSheet, View } from "react-native";
 
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useTranscribe } from "../hooks/useTranscribe";
 import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
@@ -13,7 +20,6 @@ export default function ShareIntent() {
     mimetype: string;
     data: string;
   };
-  const [oldData, setOldData] = useState<string | undefined>(undefined);
   const {
     transcribe,
     result,
@@ -32,8 +38,7 @@ export default function ShareIntent() {
       typeof shareIntent.data === "string"
         ? shareIntent.data
         : shareIntent?.data?.[0];
-    if (uri && shareIntent?.data !== oldData) {
-      setOldData(shareIntent?.data);
+    if (uri) {
       console.log(uri);
       const filePath = `${RNFS.CachesDirectoryPath}/${uuid.v4()}.${
         shareIntent.mimetype?.split(";")?.[0]?.split("/")?.[1] || "mp3"
@@ -52,11 +57,45 @@ export default function ShareIntent() {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        {transcribing && <Text>Transcribing For you...</Text>}
-        <ProgressBar progress={progress} progressColor={Colors.purple10} />
-        <Text>Transcribed text:</Text>
-        <Text>{result?.result || segments?.segments.join("\n") || ""}</Text>
-        <Text>{error}</Text>
+        {transcribing && (
+          <Text style={{ margin: 10 }}>Transcribing For you...</Text>
+        )}
+        <Text style={{ margin: 10 }}>Progress: {progress}%</Text>
+        <ProgressBar
+          style={{ margin: 10 }}
+          progress={progress}
+          progressColor={Colors.purple10}
+        />
+        <Dialog
+          visible={!!error}
+          onDismiss={() => console.log("dismissed")}
+          panDirection={PanningProvider.Directions.DOWN}
+        >
+          <View
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 10,
+            }}
+          >
+            <Text text60 style={{ margin: 10 }}>
+              Error
+            </Text>
+            <Text text80 style={{ margin: 10 }}>
+              {error}
+            </Text>
+            {typeof error === "string" && error.includes("download") && (
+              <Button
+                style={{ margin: 10 }}
+                onPress={() => {
+                  router.push("/models");
+                }}
+                label="Download"
+                fullWidth={false}
+              />
+            )}
+          </View>
+        </Dialog>
+        <Text style={{ margin: 10 }}>{result?.result || segments?.segments.join("\n") || ""}</Text>
       </View>
     </SafeAreaView>
   );
@@ -66,7 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: "#fff",
-    margin: 10,
+    margin: 20,
     //alignItems: "center",
     //justifyContent: "center",
   },

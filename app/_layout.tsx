@@ -12,7 +12,7 @@ export default function Layout() {
     if (shareIntent?.data) {
       console.log("change of shareIntent in _layout");
       router.replace({ pathname: "shareintent", params: shareIntent });
-      resetShareIntent();
+      // resetShareIntent();
     }
   }, [shareIntent]);
 

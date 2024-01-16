@@ -34,7 +34,7 @@ export function useTranscribe() {
         models.find((m) => m.downloadStatus?.completed);
 
       if (!model) {
-        throw "No model available!";
+        throw "No model available! Please download a model in the models tab.";
       }
 
       const splitFilePath = sampleFilePath.split(".");
