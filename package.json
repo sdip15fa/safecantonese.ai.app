@@ -1,13 +1,12 @@
 {
   "name": "safecantonese.ai",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "expo-router/entry",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "ios": "expo run:ios",
-    "web": "expo start --web"
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@config-plugins/ffmpeg-kit-react-native": "^6.0.0",
