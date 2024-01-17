@@ -9,8 +9,7 @@ import {
 } from "react-native-ui-lib";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import { router, useLocalSearchParams } from "expo-router";
-import { useTranscribe } from "../hooks/useTranscribe";
+import { router } from "expo-router";
 import RNFS from "react-native-fs";
 import uuid from "react-native-uuid";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -25,7 +24,7 @@ export default function ShareIntent() {
     transcribing,
     segments,
     progress,
-  } = useTranscribe();
+  } = useContext(AppContext).transcribe;
   const [error, setError] = useState<any>();
   const [lastURI, setLastURI] = useState<string>("");
 

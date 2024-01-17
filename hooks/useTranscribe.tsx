@@ -8,11 +8,11 @@ import { FFmpegKit } from "ffmpeg-kit-react-native";
 import { useCallback, useContext, useState } from "react";
 import { HistoryItem } from "./useHistory";
 import uuid from "react-native-uuid";
-import { AppContext } from "../context/AppContext";
+import { RootContext } from "../context/RootContext";
 
 export function useTranscribe() {
-  const { models } = useContext(AppContext);
-  const { history, setHistory } = useContext(AppContext).history;
+  const { models } = useContext(RootContext);
+  const { history, setHistory } = useContext(RootContext).history;
   const [segments, setSegMents] = useState<TranscribeNewSegmentsResult | null>(
     null
   );

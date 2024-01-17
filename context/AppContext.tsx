@@ -1,16 +1,17 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { HistoryItem, useHistory } from "../hooks/useHistory";
 import { TranscribeNewSegmentsResult, TranscribeResult } from "whisper.rn";
-import useModels, { Model } from "../hooks/useModels";
+import { Model } from "../hooks/useModels";
 import useShareIntent from "../hooks/useShareIntent";
-//import { useTranscribe } from "../hooks/useTranscribe";
+import { RootContext } from "./RootContext";
+import { useTranscribe } from "../hooks/useTranscribe";
 
 interface AppContextInterface {
   history: {
     history: HistoryItem[] | null;
     setHistory: React.Dispatch<React.SetStateAction<HistoryItem[] | null>>;
   };
-  /*transcribe: {
+  transcribe: {
     transcribe:
       | ((sampleFilePath: string, shareData?: string) => Promise<void>)
       | null;
@@ -19,7 +20,7 @@ interface AppContextInterface {
     setTranscribing: React.Dispatch<React.SetStateAction<boolean>>;
     segments: TranscribeNewSegmentsResult | null;
     progress: number;
-  };*/
+  };
   models: Model[] | null;
   shareIntent: {
     data: string | null;
@@ -36,16 +37,16 @@ export default function AppContextProvider(props: {
   children?: React.ReactNode | React.ReactNode[];
 }) {
   const shareIntent = useShareIntent();
-  const models = useModels();
-  //  const transcribe = useTranscribe();
-  const history = useHistory();
+  const { models } = useContext(RootContext);
+  const transcribe = useTranscribe();
+  const { history } = useContext(RootContext);
   return (
     <AppContext.Provider
       value={{
         shareIntent,
         models,
         history,
-        //transcribe
+        transcribe
       }}
     >
       {props.children}

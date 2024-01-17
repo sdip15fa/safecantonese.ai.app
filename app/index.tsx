@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Card, Text, View } from "react-native-ui-lib";
+import { Button, Card, Colors, Text, View } from "react-native-ui-lib";
 import { FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import humanizeDuration from "humanize-duration";
 import { AppContext } from "../context/AppContext";
 import * as Clipboard from "expo-clipboard";
+import Icon from "@expo/vector-icons/Ionicons";
 
 export default function Page() {
   const { history, setHistory } = useContext(AppContext).history;
@@ -16,15 +17,18 @@ export default function Page() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text text70>
-        Share audio files to safecantonese.ai to start transcribing!
-      </Text>
       {!history ? (
         <Text>Loading...</Text>
       ) : (
         <FlatList
           data={history}
           extraData={refresh}
+          nestedScrollEnabled
+          ListHeaderComponent={
+            <Text style={{ paddingHorizontal: 24 }} text70>
+              Share audio files to safecantonese.ai to start transcribing!
+            </Text>
+          }
           keyExtractor={(item) => item.id}
           renderItem={({ item }) =>
             item.pending ? (
@@ -34,6 +38,7 @@ export default function Page() {
                 flex
                 style={{
                   margin: 10,
+                  marginHorizontal: 30,
                 }}
                 enableBlur
               >
@@ -84,6 +89,14 @@ export default function Page() {
                       }
                     }}
                     style={{ marginRight: 10 }}
+                    iconSource={(props) => (
+                      <Icon
+                        name="copy"
+                        style={{ marginRight: 5, color: Colors.white }}
+                        size={14}
+                        {...props}
+                      />
+                    )}
                   />
                   <Button
                     label="Delete"
@@ -92,6 +105,15 @@ export default function Page() {
                         ...history.filter((record) => record.id !== item.id),
                       ]);
                     }}
+                    backgroundColor={Colors.$iconDanger}
+                    iconSource={(props) => (
+                      <Icon
+                        name="trash"
+                        style={{ marginRight: 5, color: Colors.white }}
+                        size={16}
+                        {...props}
+                      />
+                    )}
                   />
                 </View>
               </Card>
@@ -105,9 +127,9 @@ export default function Page() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     //alignItems: "center",
-    paddingHorizontal: 24,
+    //paddingHorizontal: 24,
     //margin: 20,
   },
   main: {

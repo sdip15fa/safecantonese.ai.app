@@ -10,13 +10,14 @@ import {
 } from "react-native-ui-lib";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppContext } from "../context/AppContext";
+import Icon from "@expo/vector-icons/Ionicons";
 
 export default function Models() {
   const { models } = useContext(AppContext);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView style={{ paddingHorizontal: 24 }}>
         {!models ? (
           <Text>Loading...</Text>
         ) : (
@@ -49,13 +50,28 @@ export default function Models() {
                   <Text style={{ marginHorizontal: 10 }}>
                     {Math.round((model.downloadStatus?.progress || 0) * 100)}%
                   </Text>
-                  <View flex style={{ margin: 10, flexDirection: "row" }}>
+                  <View
+                    flex
+                    style={{
+                      margin: 10,
+                      flexDirection: "row",
+                      justifyContent: "center",
+                    }}
+                  >
                     {model.downloadStatus?.completed && (
                       <Button
                         label={model.selected ? "Selected" : "Select"}
                         onPress={model.select}
                         style={{ marginHorizontal: 5 }}
                         disabled={model.selected}
+                        iconSource={(props) => (
+                          <Icon
+                            name="checkmark-circle"
+                            style={{ marginRight: 5, color: Colors.white }}
+                            size={18}
+                            {...props}
+                          />
+                        )}
                       />
                     )}
                     {!model.downloadStatus?.completed ? (
@@ -72,12 +88,29 @@ export default function Models() {
                         }}
                         disabled={model.downloadStatus?.downloading}
                         style={{ marginHorizontal: 5 }}
+                        iconSource={(props) => (
+                          <Icon
+                            name="download"
+                            style={{ marginRight: 5, color: Colors.white }}
+                            size={18}
+                            {...props}
+                          />
+                        )}
                       />
                     ) : (
                       <Button
                         label="Delete"
                         onPress={model.delete}
                         style={{ marginHorizontal: 5 }}
+                        backgroundColor={Colors.$iconDanger}
+                        iconSource={(props) => (
+                          <Icon
+                            name="trash"
+                            style={{ marginRight: 5, color: Colors.white }}
+                            size={16}
+                            {...props}
+                          />
+                        )}
                       />
                     )}
                   </View>
@@ -96,7 +129,6 @@ const styles = StyleSheet.create({
     flex: 1,
     //alignItems: "center",
     //    padding : 24,
-    paddingHorizontal: 24,
   },
   main: {
     flex: 1,
