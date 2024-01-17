@@ -5,6 +5,14 @@ import * as FileSystem from "expo-file-system";
 
 export const ModelsMeta = [
   {
+    name: "whisper-base-yue-mdcc",
+    downloadUrl:
+      "https://huggingface.co/wcyat/whisper-base-yue-mdcc/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+    description:
+      "Faster at the cost of reduced performance. (datasets: common-voice/yue, mdcc)",
+    en_ok: true,
+  },
+  {
     name: "whisper-small-yue",
     downloadUrl:
       "https://huggingface.co/wcyat/whisper-small-yue/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
