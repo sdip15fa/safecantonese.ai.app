@@ -69,10 +69,18 @@ export default function useModels() {
   useEffect(() => {
     (async () => {
       if (!models) {
-        const initModels =
+        let initModels =
           (JSON.parse((await AsyncStorage.getItem("models")) || "null") as
             | Model[]
             | null) || ModelsMeta;
+        if (ModelsMeta.length !== initModels.length) {
+          initModels = ModelsMeta.map((v) => {
+            return {
+              ...initModels.find((m) => m.name === v.name),
+              ...v,
+            };
+          });
+        }
         for (let i = 0; i < initModels.length; i++) {
           if (
             initModels[i].downloadStatus &&
