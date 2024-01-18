@@ -20,6 +20,7 @@ interface AppContextInterface {
     setTranscribing: React.Dispatch<React.SetStateAction<boolean>>;
     segments: TranscribeNewSegmentsResult | null;
     progress: number;
+    stop: (() => Promise<void>) | null;
   };
   models: Model[] | null;
   shareIntent: {
@@ -46,7 +47,7 @@ export default function AppContextProvider(props: {
         shareIntent,
         models,
         history,
-        transcribe
+        transcribe,
       }}
     >
       {props.children}

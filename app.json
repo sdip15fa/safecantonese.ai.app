@@ -26,12 +26,19 @@
         {
           "package": "audio"
         }
+      ],
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
+        }
       ]
     ],
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "me.wcyat.safecantoneseai"
+      "bundleIdentifier": "me.wcyat.safecantoneseai",
+      "usesIcloudStorage": true
     },
     "android": {
       "adaptiveIcon": {

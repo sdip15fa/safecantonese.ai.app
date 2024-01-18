@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Tabs, useRouter } from "expo-router";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "@expo/vector-icons/FontAwesome";
 
 import useShareIntent from "../hooks/useShareIntent";
 import AppContextProvider from "../context/AppContext";
@@ -40,6 +40,14 @@ export default function Layout() {
               headerTitle: "Home - safecantonese.ai",
               title: "Home",
               tabBarIcon: (props) => <Icon name="home" {...props} />,
+            }}
+          />
+          <Tabs.Screen
+            name="history"
+            options={{
+              headerTitle: "History - safecantonese.ai",
+              title: "History",
+              tabBarIcon: (props) => <Icon name="history" {...props} />,
             }}
           />
           <Tabs.Screen

@@ -19,6 +19,7 @@ export function useTranscribe() {
   const [result, setResult] = useState<TranscribeResult | null>(null);
   const [progress, setProgress] = useState(0);
   const [transcribing, setTranscribing] = useState(false);
+  const [stop, setStop] = useState<(() => Promise<void>) | null>(null);
 
   const transcribe = useCallback(
     async (sampleFilePath: string, shareData?: string) => {
@@ -56,11 +57,17 @@ export function useTranscribe() {
       }
 
       const options: TranscribeFileOptions = {
-        language: model.en_ok ? "en" : "zh",
+        language: "zh",
         onProgress: (progress: number) => {
           setProgress(progress);
         },
         onNewSegments: (segments) => {
+          segments.segments = segments.segments.map((v) => {
+            if (model.filter) {
+              v.text = model.filter(v.text);
+            }
+            return v;
+          });
           setSegMents(segments);
         },
       };
@@ -83,20 +90,40 @@ export function useTranscribe() {
 
       const { stop, promise } = whisperContext.transcribe(newFilePath, options);
 
+      setStop(() => async () => {
+        await stop();
+        setTranscribing(false);
+        setResult(null);
+        setSegMents(null);
+        setProgress(0);
+        setHistory([...history]);
+      });
+
       const results = await promise;
+      if (!results.isAborted) {
+        if (model.filter) {
+          results.result = model.filter(results.result);
+          results.segments = results.segments.map((v) => {
+            if (model.filter) {
+              v.text = model.filter(v.text);
+            }
+            return v;
+          });
+        }
+        setResult(results);
+        setTranscribing(false);
+        record.pending = false;
+        record.result = results;
 
-      setResult(results);
-      setTranscribing(false);
-      record.pending = false;
-      record.result = results;
-
-      // history isn't changed so just do it again
-      setHistory([record, ...history]);
+        // history isn't changed so just do it again
+        setHistory([record, ...history]);
+      }
 
       // result: (The inference text result from audio file)
     },
     [models, history, setHistory]
   );
+
   return {
     transcribe: models && history ? transcribe : null,
     result,
@@ -104,5 +131,6 @@ export function useTranscribe() {
     setTranscribing,
     segments,
     progress,
+    stop,
   };
 }

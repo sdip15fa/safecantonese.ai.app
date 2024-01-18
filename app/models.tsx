@@ -40,16 +40,24 @@ export default function Models() {
                     content={[{ text: model.description, text80: true }]}
                     style={{ marginVertical: 5, marginHorizontal: 10 }}
                   />
-                  <ProgressBar
-                    progress={Math.round(
-                      (model.downloadStatus?.progress || 0) * 100
-                    )}
-                    progressColor={Colors.purple10}
-                    style={{ margin: 10, height: 8 }}
-                  />
-                  <Text style={{ marginHorizontal: 10 }}>
-                    {Math.round((model.downloadStatus?.progress || 0) * 100)}%
-                  </Text>
+                  {model.downloadStatus?.downloading && (
+                    <>
+                      <ProgressBar
+                        progress={Math.round(
+                          (model.downloadStatus?.progress || 0) * 100
+                        )}
+                        progressColor={Colors.purple10}
+                        style={{ margin: 10, height: 8 }}
+                      />
+                      <Text style={{ marginHorizontal: 10 }}>
+                        {Math.round(
+                          (model.downloadStatus?.progress || 0) * 100
+                        )}
+                        %
+                      </Text>
+                    </>
+                  )}
+
                   <View
                     flex
                     style={{
@@ -74,7 +82,7 @@ export default function Models() {
                         )}
                       />
                     )}
-                    {!model.downloadStatus?.completed ? (
+                    {!model.downloadStatus?.completed && (
                       <Button
                         label={
                           model.downloadStatus?.downloading
@@ -97,7 +105,8 @@ export default function Models() {
                           />
                         )}
                       />
-                    ) : (
+                    )}
+                    {model.delete && !model.no_delete && !model.selected && (
                       <Button
                         label="Delete"
                         onPress={model.delete}
