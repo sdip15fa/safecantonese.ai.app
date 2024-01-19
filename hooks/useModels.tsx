@@ -4,25 +4,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
 
 export const ModelsMeta = [
-  {
-    name: "whisper-base-yue-mdcc",
-    downloadUrl:
-      "https://huggingface.co/wcyat/whisper-base-yue-mdcc/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
-    description:
-      "Faster at the cost of reduced performance. (datasets: common-voice/yue, mdcc)",
-    downloadStatus: {
-      completed: true,
-      path: require("../assets/models/whisper-base-yue-mdcc.bin"),
-    },
-    no_delete: true,
-    filter: (text: string) => {
-      
-      return text
-        .replace(/請問我一個問題是你做的嗎\?/g, "")
-        .replace(/請問我會不會有問題呢\?/g, "");
-      
-    },
-  },
   /*{
     name: "whisper-small-yue",
     downloadUrl:
@@ -42,9 +23,7 @@ export const ModelsMeta = [
     },
     no_delete: true,
     filter: (text: string) => {
-      return text
-        .replace(/\(CC字幕製作\S+\)/g, "")
-        .replace(/by bwd6/g, "");
+      return text.replace(/\(CC字幕製作\S+\)/g, "").replace(/by bwd6/g, "");
     },
   },
   {
@@ -63,6 +42,23 @@ export const ModelsMeta = [
         .replace(/謝謝大家[收|觀]看 下次再見 拜拜/g, "")
         .replace(/你怎麼會這樣做呢\?/g, "")
         .replace(/我看你還沒進去嗎\?/g, "");
+    },
+  },
+  {
+    name: "whisper-base-yue-mdcc",
+    downloadUrl:
+      "https://huggingface.co/wcyat/whisper-base-yue-mdcc/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+    description:
+      "Faster at the cost of reduced performance. (datasets: common-voice/yue, mdcc)",
+    downloadStatus: {
+      completed: true,
+      path: require("../assets/models/whisper-base-yue-mdcc.bin"),
+    },
+    no_delete: true,
+    filter: (text: string) => {
+      return text
+        .replace(/請問我一個問題是你做的嗎\?/g, "")
+        .replace(/請問我會不會有問題呢\?/g, "");
     },
   },
   /*{
@@ -104,16 +100,14 @@ export default function useModels() {
           (JSON.parse((await AsyncStorage.getItem("models")) || "null") as
             | Model[]
             | null) || ModelsMeta;
-        if (
-          !ModelsMeta.every((v) => initModels.find((m) => m.name === v.name))
-        ) {
-          initModels = ModelsMeta.map((v) => {
-            return {
-              ...initModels.find((m) => m.name === v.name),
-              ...v,
-            };
-          });
-        }
+
+        initModels = ModelsMeta.map((v) => {
+          return {
+            ...initModels.find((m) => m.name === v.name),
+            ...v,
+          };
+        });
+
         for (let i = 0; i < initModels.length; i++) {
           if (
             initModels[i].downloadStatus &&
@@ -155,10 +149,7 @@ export default function useModels() {
   }, [models]);
 
   useEffect(() => {
-    if (
-      models &&
-      !models.every((model) => model.select)
-    ) {
+    if (models && !models.every((model) => model.select)) {
       setModels(addFunctions());
     }
   }, [models]);
@@ -167,7 +158,7 @@ export default function useModels() {
     if (models && !models.find((v) => v.selected)) {
       models.find((v) => v.downloadStatus?.completed)?.select?.();
     }
-  }, [models])
+  }, [models]);
 
   const addFunctions = useCallback(() => {
     return (
