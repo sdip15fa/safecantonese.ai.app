@@ -139,6 +139,7 @@ There is currently no way to stop the transcription. You can close and re-open t
               }).then((result) => {
                 if (!result.canceled) {
                   setFile(result.assets[0]);
+                  setLastShareData(null);
                 }
               });
             }}
