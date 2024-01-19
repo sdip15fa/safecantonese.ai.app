@@ -46,7 +46,7 @@ export function useTranscribe() {
 
       try {
         await FFmpegKit.execute(
-          `-i ${sampleFilePath} -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
+          `-i ${sampleFilePath} -af "silenceremove=start_periods=1:start_threshold=-50dB:detection=peak,aformat=dblp,areverse,silenceremove=start_periods=1:start_threshold=-50dB:detection=peak,aformat=dblp,areverse" -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
         );
       } catch {
         throw "ffmpeg failed";
@@ -62,12 +62,12 @@ export function useTranscribe() {
           setProgress(progress);
         },
         onNewSegments: (segments) => {
-          segments.segments = segments.segments.map((v) => {
+          /*segments.segments = segments.segments.map((v) => {
             if (model.filter) {
               v.text = model.filter(v.text);
             }
             return v;
-          });
+          });*/
           setSegMents(segments);
         },
       };
@@ -101,7 +101,7 @@ export function useTranscribe() {
 
       const results = await promise;
       if (!results.isAborted) {
-        if (model.filter) {
+      /*if (model.filter) {
           results.segments = results.segments.map((v) => {
             if (model.filter) {
               v.text = model.filter(v.text);
@@ -109,7 +109,7 @@ export function useTranscribe() {
             return v;
           });
           results.result = results.segments.join(" ");
-        }
+        }*/
         setResult(results);
         setTranscribing(false);
         record.pending = false;
