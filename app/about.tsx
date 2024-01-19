@@ -58,12 +58,11 @@ export default function Page() {
           <Text text40 style={{ margin: 5 }}>
             Copyright
           </Text>
-
-          <Text style={{ marginHorizontal: 5, marginVertical: 5 }}>
+          <Text style={{ margin: 5 }}>
             Copyright © Wong Chun Yat (wcyat) 2024-present.
           </Text>
           <Text
-            style={{ color: "blue", marginHorizontal: 5, marginBottom: 5 }}
+            style={{ color: "blue", margin: 5 }}
             onPress={() =>
               Linking.openURL(
                 "https://github.com/sdip15fa/safecantonese.ai.app/blob/master/LICENSE.md"
@@ -71,6 +70,19 @@ export default function Page() {
             }
           >
             GPL-3.0-or-later
+          </Text>
+          <Text text40 style={{ margin: 5 }}>
+            Icon
+          </Text>
+          <Text
+            style={{ color: "blue", margin: 5 }}
+            onPress={() =>
+              Linking.openURL(
+                "https://www.flaticon.com/free-icons/artificial-intelligence"
+              )
+            }
+          >
+            Artificial intelligence icons created by Eucalyp - Flaticon
           </Text>
           <Text text40 style={{ margin: 5 }}>
             Privacy Policy
