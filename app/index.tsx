@@ -13,13 +13,13 @@ import {
 import { AppContext } from "../context/AppContext";
 import { ScrollView } from "react-native-gesture-handler";
 import * as DocumentPicker from "expo-document-picker";
-import MaterialIcon from "@expo/vector-icons/MaterialIcons";
 import * as Clipboard from "expo-clipboard";
-import IonIcon from "@expo/vector-icons/Ionicons";
+import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Share } from "react-native";
 import uuid from "react-native-uuid";
 import RNFS from "react-native-fs";
 import { Tip, showTip } from "react-native-tip";
+import AudioPlayer from "../components/AudioPlayer";
 
 export default function Page() {
   const { transcribe, result, transcribing, segments, progress, stop } =
@@ -106,7 +106,7 @@ export default function Page() {
               onPress={() => showTip("help")}
               text80
               iconSource={(props) => (
-                <MaterialIcon
+                <MaterialIcons
                   name="help"
                   size={22}
                   style={{ marginRight: 3 }}
@@ -119,7 +119,7 @@ export default function Page() {
           <Button
             style={{ marginVertical: 10 }}
             iconSource={(props) => (
-              <MaterialIcon
+              <MaterialIcons
                 name="audiotrack"
                 size={22}
                 style={{ marginRight: 5 }}
@@ -140,23 +140,33 @@ export default function Page() {
             }}
             label="Select File"
           />
-
           {!!file && <Text style={{ margin: 10 }}>File: {file.name}</Text>}
+          {file?.uri && <AudioPlayer audioUri={file.uri} />}
           <Button
             backgroundColor={
               transcribing ? Colors.$iconDanger : Colors.$iconSuccess
             }
             style={{ marginVertical: 10 }}
             disabled={!transcribe || transcribing || !file}
-            iconSource={(props) => (
-              <MaterialIcon
-                name={transcribing ? "stop" : "play-arrow"}
-                color={Colors.white}
-                size={24}
-                style={{ marginRight: 5 }}
-                {...props}
-              />
-            )}
+            iconSource={(props) =>
+              transcribing ? (
+                <MaterialIcons
+                  name="stop"
+                  color={Colors.white}
+                  size={24}
+                  style={{ marginRight: 5 }}
+                  {...props}
+                />
+              ) : (
+                <Entypo
+                  name="text"
+                  size={24}
+                  color={Colors.white}
+                  style={{ marginRight: 5 }}
+                  {...props}
+                />
+              )
+            }
             onPress={() => {
               if (transcribing && stop) {
                 return stop();
@@ -212,7 +222,7 @@ export default function Page() {
                     }}
                     style={{ marginRight: 10 }}
                     iconSource={(props) => (
-                      <IonIcon
+                      <Ionicons
                         name="copy"
                         style={{ marginRight: 5, color: Colors.white }}
                         size={14}
@@ -228,7 +238,7 @@ export default function Page() {
                       });
                     }}
                     iconSource={(props) => (
-                      <IonIcon
+                      <Ionicons
                         name="share"
                         style={{ marginRight: 5, color: Colors.white }}
                         size={14}
