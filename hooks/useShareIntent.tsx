@@ -30,6 +30,7 @@ export default function useShareIntent() {
   }, []);
 
   useEffect(() => {
+    ShareMenu.getInitialShare(handleShare);
     ShareMenu.addNewShareListener(handleShare);
   }, []);
 
