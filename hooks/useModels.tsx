@@ -23,7 +23,10 @@ export const ModelsMeta = [
     },
     no_delete: true,
     filter: (text: string) => {
-      return text.replace(/\(CC字幕製作\S+\)/g, "").replace(/by bwd6/g, "");
+      return text
+        .replace(/\(CC字幕製作.*\)/g, "")
+        .replace(/by bwd6/g, "")
+        .replace(/謝謝大家[收|觀]看.*/g, "");
     },
   },
   {
@@ -39,7 +42,8 @@ export const ModelsMeta = [
     no_delete: true,
     filter: (text: string) => {
       return text
-        .replace(/謝謝大家[收|觀]看 下次再見 拜拜/g, "")
+        .replace(/謝謝大家[收|觀]看.*/g, "")
+        .replace(/謝謝[收|觀]看.*/g, "")
         .replace(/你怎麼會這樣做呢\?/g, "")
         .replace(/我看你還沒進去嗎\?/g, "");
     },

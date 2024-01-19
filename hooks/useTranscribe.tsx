@@ -102,13 +102,13 @@ export function useTranscribe() {
       const results = await promise;
       if (!results.isAborted) {
         if (model.filter) {
-          results.result = model.filter(results.result);
           results.segments = results.segments.map((v) => {
             if (model.filter) {
               v.text = model.filter(v.text);
             }
             return v;
           });
+          results.result = results.segments.join(" ");
         }
         setResult(results);
         setTranscribing(false);
