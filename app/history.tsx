@@ -87,7 +87,7 @@ export default function Page() {
                   style={{ margin: 10 }}
                 />
                 <Badge
-                  label={item.model}
+                  label={`Model: ${item.model}`}
                   style={{ marginHorizontal: 10, marginVertical: 5 }}
                   backgroundColor={Colors.purple30}
                 />
