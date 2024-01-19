@@ -90,7 +90,11 @@ export default function Page() {
         <View style={{ flex: 1, marginHorizontal: 10 }}>
           <Tip
             id="help"
-            body={`To transcribe, select a file from your device using the "Select File" button, then press the "Transcribe" button. Alternatively, you can share an audio file from any application.`}
+            body={`To transcribe, select a file from your device using the "Select File" button, then press the "Transcribe" button. Alternatively, you can share an audio file from any application.
+
+Note that transcribing may take a long time. You can try switching to a faster model in the models tab.
+
+There is currently no way to stop the transcription. You can close and re-open the app instead.`}
             showItemPulseAnimation={false}
           >
             <Button
