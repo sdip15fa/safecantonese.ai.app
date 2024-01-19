@@ -48,6 +48,11 @@
       "permissions": [
         "READ_EXTERNAL_STORAGE"
       ],
+      "blockedPermissions": [
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.INTERNET"
+      ],
       "package": "me.wcyat.safecantoneseai"
     },
     "web": {
