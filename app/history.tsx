@@ -1,6 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Card, Colors, Text, View } from "react-native-ui-lib";
-import { FlatList, Platform, StyleSheet } from "react-native";
+import {
+  Badge,
+  Button,
+  Card,
+  Colors,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native-ui-lib";
+import { FlatList, Share, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import humanizeDuration from "humanize-duration";
 import { AppContext } from "../context/AppContext";
@@ -29,7 +37,7 @@ export default function Page() {
       } else {
         setFiltered([...history]);
       }
-      setRefresh(!refresh)
+      setRefresh(!refresh);
     }
   }, [search, history]);
 
@@ -39,7 +47,7 @@ export default function Page() {
         placeholder="Search here..."
         onChangeText={setSearch}
         value={search}
-        style={{ marginHorizontal: 20, marginBottom: 10 }}
+        style={{ marginHorizontal: 20 }}
       />
       {!history ? (
         <Text>Loading...</Text>
@@ -49,40 +57,39 @@ export default function Page() {
           extraData={refresh}
           nestedScrollEnabled
           keyExtractor={(item) => item.id}
-          style={{ marginBottom: tabBarHeight + 20 }}
-          renderItem={({ item }) =>
+          style={{ marginBottom: tabBarHeight }}
+          renderItem={({ item, index }) =>
             item.pending ? (
               <View />
             ) : (
               <Card
                 flex
                 style={{
-                  margin: 8,
+                  margin: 5,
                   marginHorizontal: 30,
+                  ...(index === (filtered?.length || 0) - 1  && {
+                    marginBottom: 20
+                  })
                 }}
                 enableBlur
               >
                 <Card.Section
                   content={[
                     {
-                      text: `${
-                        humanizeDuration(
-                          new Date().getTime() - item.date?.getTime?.() || 0
-                        ).split(",")[0]
-                      } ago`,
+                      text: `${humanizeDuration(
+                        new Date().getTime() - item.date?.getTime?.() || 0
+                      )
+                        .split(",")[0]
+                        .replace(/^(\d+)\.\d+ seconds$/, "$1 seconds")} ago`,
                       text60: true,
                     },
                   ]}
                   style={{ margin: 10 }}
                 />
-                <Card.Section
-                  content={[
-                    {
-                      text: `Model: ${item.model}`,
-                      text70: true,
-                    },
-                  ]}
+                <Badge
+                  label={item.model}
                   style={{ marginHorizontal: 10, marginVertical: 5 }}
+                  backgroundColor={Colors.purple30}
                 />
                 <Card.Section
                   content={[
@@ -108,10 +115,28 @@ export default function Page() {
                         Clipboard.setStringAsync(item.result?.result);
                       }
                     }}
-                    style={{ marginRight: 10 }}
+                    style={{ marginRight: 5 }}
                     iconSource={(props) => (
                       <Icon
                         name="copy"
+                        style={{ marginRight: 5, color: Colors.white }}
+                        size={14}
+                        {...props}
+                      />
+                    )}
+                  />
+                  <Button
+                    label="Share"
+                    onPress={() => {
+                      if (item.result)
+                        Share.share({
+                          message: item.result.result,
+                        });
+                    }}
+                    style={{ marginRight: 5 }}
+                    iconSource={(props) => (
+                      <Icon
+                        name="share"
                         style={{ marginRight: 5, color: Colors.white }}
                         size={14}
                         {...props}

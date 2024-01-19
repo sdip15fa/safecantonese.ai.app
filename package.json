@@ -44,6 +44,7 @@
     "react-native-screens": "~3.22.0",
     "react-native-share-menu": "^6.0.0",
     "react-native-splash-screen": "^3.3.0",
+    "react-native-tip": "^0.0.23",
     "react-native-ui-lib": "^7.14.4",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^10.0.3",

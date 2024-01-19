@@ -28,6 +28,21 @@ export default function Page() {
             wcyat
           </Text>
           <Text text40 style={{ margin: 5 }}>
+            Contact
+          </Text>
+          <Text
+            style={{ color: "blue", margin: 5 }}
+            onPress={() => Linking.openURL("https://t.me/safecantoneseai")}
+          >
+            Telegram Group
+          </Text>
+          <Text
+            style={{ color: "blue", margin: 5 }}
+            onPress={() => Linking.openURL("mailto:wcyat@wcyat.me")}
+          >
+            wcyat@wcyat.me
+          </Text>
+          <Text text40 style={{ margin: 5 }}>
             Source Code
           </Text>
           <Text

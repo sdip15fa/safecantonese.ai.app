@@ -5,6 +5,7 @@ import Icon from "@expo/vector-icons/FontAwesome";
 import useShareIntent from "../hooks/useShareIntent";
 import AppContextProvider from "../context/AppContext";
 import RootContextProvider from "../context/RootContext";
+import TipProvider from "react-native-tip";
 
 export default function Layout() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (shareIntent?.data) {
-      router.replace({ pathname: "shareintent" });
+      router.replace({ pathname: "/" });
       // resetShareIntent();
     }
   }, [shareIntent]);
@@ -20,20 +21,12 @@ export default function Layout() {
   return (
     <RootContextProvider>
       <AppContextProvider>
+        <TipProvider statusBarTranslucent />
         <Tabs
           screenOptions={{
             headerTintColor: "purple",
           }}
         >
-          <Tabs.Screen
-            // Name of the route to hide.
-            name="shareintent"
-            options={{
-              title: "Transcribe - safecantonese.ai",
-              // This tab will no longer show up in the tab bar.
-              href: null,
-            }}
-          />
           <Tabs.Screen
             name="index"
             options={{
