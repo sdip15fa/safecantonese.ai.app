@@ -46,9 +46,7 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "READ_EXTERNAL_STORAGE",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
+        "READ_EXTERNAL_STORAGE"
       ],
       "package": "me.wcyat.safecantoneseai"
     },
