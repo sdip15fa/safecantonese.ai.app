@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+fileList=$(git diff --diff-filter=d --cached --name-only | tr '\n' ' ' | xargs)
+
+# licenses
+if [ "$(echo $fileList | grep package.json | xargs)" != "" ];
+then
+yarn generate-license-file --input package.json --output third-party-licenses.txt --overwrite
+git add third-party-licenses.txt
+fi;

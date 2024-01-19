@@ -71,6 +71,16 @@ export default function Page() {
           >
             GPL-3.0-or-later
           </Text>
+          <Text
+          style={{ color: "blue", margin: 5 }}
+            onPress={() => {
+              Linking.openURL(
+                "https://github.com/sdip15fa/safecantonese.ai.app/blob/master/third-party-licenses.txt"
+              );
+            }}
+          >
+            Third-party Licenses
+          </Text>
           <Text text40 style={{ margin: 5 }}>
             Icon
           </Text>
