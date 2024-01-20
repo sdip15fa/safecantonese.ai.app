@@ -90,7 +90,7 @@ export function useTranscribe() {
               ...backgroundServiceOptions,
               taskTitle: `Transcribing... (${progress}%)`,
               progressBar: {
-                ...backgroundServiceOptions.progressBar,
+                max: 100,
                 value: progress,
               },
             }); // Only Android, iOS will ignore this call
