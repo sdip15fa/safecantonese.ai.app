@@ -46,7 +46,7 @@ export function useTranscribe() {
 
       try {
         await FFmpegKit.execute(
-          `-i ${sampleFilePath} -af "loudnorm,silenceremove=start_periods=1:start_threshold=-30dB:detection=peak,areverse,silenceremove=start_periods=1:start_threshold=-30dB:detection=peak,areverse" -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
+          `-i ${sampleFilePath} -af "loudnorm,silenceremove=start_periods=1:start_threshold=-40dB:detection=peak,areverse,silenceremove=start_periods=1:start_threshold=-40dB:detection=peak,areverse" -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
         );
       } catch {
         throw "ffmpeg failed";
