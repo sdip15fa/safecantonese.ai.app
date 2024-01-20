@@ -56,7 +56,7 @@ export function useTranscribe() {
         },
         linkingURI: "me.wcyat.safecantoneseai:///", // See Deep Linking for more info
         parameters: {
-          delay: 500,
+          delay: 0,
         },
         progressBar: {
           max: 100,
@@ -135,6 +135,7 @@ export function useTranscribe() {
           setSegMents(null);
           setProgress(0);
           setHistory([...history]);
+          stopped = true;
         });
 
         results = await promise;

@@ -9,8 +9,8 @@ are transcribed right in your device without ever leaving it.
 
 ## Technologies
 
-- react native
-- [whisper.cpp](https://github.com/ggerganov/whisper.cpp)
+- react native (expo)
+- [whisper.cpp](https://github.com/ggerganov/whisper.cpp) (using [whisper.rn](https://github.com/mybigday/whisper.rn))
 
 ## Build instructions
 

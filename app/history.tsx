@@ -5,7 +5,6 @@ import {
   Card,
   Colors,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native-ui-lib";
 import { FlatList, Share, StyleSheet } from "react-native";

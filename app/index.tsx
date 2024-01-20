@@ -45,6 +45,8 @@ export default function Page() {
               sendNotifications({
                 title: "Transcription completed!",
                 body: result.result,
+                priority: "high",
+                categoryIdentifier: "transcribedText",
               });
           })
           .catch((err: any) => {
@@ -117,7 +119,9 @@ export default function Page() {
 
 Note that transcribing may take a long time. You can try switching to a faster model in the models tab.
 
-There is currently no way to stop the transcription. You can close and re-open the app instead.`}
+There is currently no way to stop the transcription. You can close and re-open the app instead.
+
+Once the "Transcribing..." notification appears, you are free to exit the app and wait for your audio to be transcribed.`}
             showItemPulseAnimation={false}
           >
             <Button
