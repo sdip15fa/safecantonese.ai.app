@@ -49,6 +49,18 @@ export const ModelsMeta = [
     },
   },
   {
+    name: "whisper-base-yue-hk",
+    downloadUrl:
+      "https://huggingface.co/wcyat/whisper-base-yue-hk/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+    description:
+      "Faster at the cost of reduced performance. (datasets: common-voice/yue, common-voice/zh-hk)",
+    downloadStatus: {
+      completed: true,
+      path: require("../assets/models/whisper-base-yue-hk.bin"),
+    },
+    no_delete: true,
+  },
+  /*{
     name: "whisper-base-yue-mdcc",
     downloadUrl:
       "https://huggingface.co/wcyat/whisper-base-yue-mdcc/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
@@ -64,7 +76,7 @@ export const ModelsMeta = [
         .replace(/請問我一個問題是你做的嗎\?/g, "")
         .replace(/請問我會不會有問題呢\?/g, "");
     },
-  },
+  },*/
   /*{
     name: "whisper-small-yue-hk-mdcc",
     downloadUrl:
