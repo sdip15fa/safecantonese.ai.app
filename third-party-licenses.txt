@@ -947,6 +947,7 @@ The following npm packages may be included in this product:
  - @expo/config-plugins@7.2.5
  - @expo/config@6.0.24
  - @expo/config@8.1.2
+ - @expo/config@8.5.4
  - @expo/metro-config@0.10.7
  - @expo/package-manager@1.1.2
  - @expo/prebuild-config@6.2.6
@@ -981,6 +982,7 @@ The following npm packages may be included in this product:
 
  - @expo/config-types@45.0.0
  - @expo/config-types@49.0.0
+ - @expo/config-types@50.0.0
 
 These packages each contain the following license and notice below:
 
@@ -1325,7 +1327,7 @@ SOFTWARE.
 The following npm packages may be included in this product:
 
  - @expo/image-utils@0.3.22
- - @expo/image-utils@0.3.23
+ - @expo/image-utils@0.4.1
  - @expo/osascript@2.0.33
 
 These packages each contain the following license and notice below:
@@ -8988,11 +8990,12 @@ SOFTWARE.
 
 -----------
 
-The following npm package may be included in this product:
+The following npm packages may be included in this product:
 
  - expo-application@5.3.1
+ - expo-application@5.8.3
 
-This package contains the following license and notice below:
+These packages each contain the following license and notice below:
 
 # expo-application
 
@@ -9209,11 +9212,12 @@ Contributions are very welcome! Please refer to guidelines described in the [con
 
 -----------
 
-The following npm package may be included in this product:
+The following npm packages may be included in this product:
 
  - expo-constants@14.4.2
+ - expo-constants@15.4.5
 
-This package contains the following license and notice below:
+These packages each contain the following license and notice below:
 
 # expo-constants
 
@@ -9943,7 +9947,7 @@ Contributions are very welcome! Please refer to guidelines described in the [con
 
 The following npm package may be included in this product:
 
- - expo-notifications@0.20.1
+ - expo-notifications@0.27.4
 
 This package contains the following license and notice below:
 
@@ -10075,7 +10079,7 @@ This module requires permission to subscribe to device boot. It's used to setup 
 
 ### Config plugin setup (optional)
 
-If you're using EAS Build, you can set your Android notification icon and color tint, add custom push notification sounds, and set your iOS notification environment using the expo-notifications config plugin ([what's a config plugin?](https://docs.expo.dev/home/config-plugins/introduction)). To setup, just add the config plugin to the plugins array of your `app.json` or `app.config.js` as shown below, then rebuild the app.
+If you're using EAS Build, you can set your Android notification icon and color tint, add custom push notification sounds, and set your iOS notification environment using the expo-notifications config plugin ([what's a config plugin?](https://docs.expo.dev/config-plugins/introduction)). To setup, just add the config plugin to the plugins array of your `app.json` or `app.config.js` as shown below, then rebuild the app.
 
 ```json
 {
@@ -22612,11 +22616,12 @@ of the api.
 
 -----------
 
-The following npm package may be included in this product:
+The following npm packages may be included in this product:
 
+ - sucrase@3.34.0
  - sucrase@3.35.0
 
-This package contains the following license and notice below:
+These packages each contain the following license and notice below:
 
 The MIT License (MIT)
 
