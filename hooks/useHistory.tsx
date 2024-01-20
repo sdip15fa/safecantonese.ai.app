@@ -5,6 +5,7 @@ import { TranscribeResult } from "whisper.rn";
 export interface HistoryItem {
   id: string;
   sampleFilePath: string;
+  fileName?: string;
   shareData?: string;
   date: Date;
   result?: TranscribeResult;

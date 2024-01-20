@@ -15,6 +15,7 @@ interface AppContextInterface {
     transcribe:
       | ((
           sampleFilePath: string,
+          fileName?: string,
           shareData?: string
         ) => Promise<TranscribeResult>)
       | null;

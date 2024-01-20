@@ -37,11 +37,11 @@ export default function Page() {
   } | null>(null);
 
   const startTranscribe = useCallback(
-    (uri: string, shareData?: string) => {
+    (uri: string, fileName?: string, shareData?: string) => {
       if (transcribe)
-        transcribe(uri, shareData)
+        transcribe(uri, fileName, shareData)
           .then((result) => {
-            if (result.result && !result.isAborted)
+            if (result?.result && !result.isAborted)
               sendNotifications({
                 title: "Transcription completed!",
                 body: result.result,
@@ -66,12 +66,17 @@ export default function Page() {
         shareIntent.mimetype?.split(";")?.[0]?.split("/")?.[1] || "mp3"
       }`;
       RNFS.copyFile(shareIntent.data, filePath).then(() => {
+        const fileName = filePath.split("/").pop() || "";
         setFile({
-          name: filePath.split("/")[filePath.split("/").length - 1],
+          name: fileName,
           uri: filePath,
         });
 
-        startTranscribe(filePath, shareIntent.data || undefined);
+        startTranscribe(
+          filePath,
+          fileName || undefined,
+          shareIntent.data || undefined
+        );
       });
     }
   }, [transcribe, lastShareData, shareIntent]);
@@ -195,7 +200,7 @@ There is currently no way to stop the transcription. You can close and re-open t
                 return stop();
               }
               if (file?.uri && transcribe) {
-                startTranscribe(file.uri);
+                startTranscribe(file.uri, file.name);
               }
             }}
             label={transcribing ? "Transcribing..." : "Transcribe"}

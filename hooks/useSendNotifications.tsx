@@ -30,13 +30,14 @@ export function useSendNotifications() {
   }, []);
 
   return (
-    content: { title?: string; body: string },
+    content: { title?: string; subtitle?: string; body: string },
     trigger?: Notifications.NotificationTriggerInput | null
   ) => {
     // Second, call the method
     Notifications.scheduleNotificationAsync({
       content: {
         title: content.title,
+        subtitle: content.subtitle,
         body: content.body,
       },
       trigger: trigger || null,

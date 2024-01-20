@@ -11,7 +11,7 @@ interface RootContextInterface {
     setHistory: React.Dispatch<React.SetStateAction<HistoryItem[] | null>>;
   };
   sendNotifications: (
-    content: { title?: string; body: string },
+    content: { title?: string; subtitle?: string; body: string },
     trigger?: NotificationTriggerInput | null
   ) => void;
 }
