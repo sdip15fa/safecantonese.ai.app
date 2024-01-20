@@ -26,7 +26,8 @@ export const ModelsMeta = [
       return text
         .replace(/\(CC字幕製作.*\)/g, "")
         .replace(/by bwd6/g, "")
-        .replace(/謝謝大家[收|觀]看.*/g, "");
+        .replace(/謝謝大家[收|觀]看.*/g, "")
+        .replace(/\(.*\)/g, "");
     },
   },
   {
@@ -45,7 +46,8 @@ export const ModelsMeta = [
         .replace(/謝謝大家[收|觀]看.*/g, "")
         .replace(/謝謝[收|觀]看.*/g, "")
         .replace(/你怎麼會這樣做呢\?/g, "")
-        .replace(/我看你還沒進去嗎\?/g, "");
+        .replace(/我看你還沒進去嗎\?/g, "")
+        .replace(/\(.*\)/g, "");
     },
   },
   {
@@ -59,6 +61,14 @@ export const ModelsMeta = [
       path: require("../assets/models/whisper-base-yue-hk.bin"),
     },
     no_delete: true,
+    filter: (text: string) => {
+      return text
+        .replace(/你別再問我了.*/g, "")
+        .replace(/請問歷史上有否.*/g, "")
+        .replace(/請問.*嗎(\?)/g, "")
+        .replace(/\(.*\)/g, "");
+      // .replace(/梁國雄議員/g, "");
+    },
   },
   /*{
     name: "whisper-base-yue-mdcc",
@@ -74,7 +84,8 @@ export const ModelsMeta = [
     filter: (text: string) => {
       return text
         .replace(/請問我一個問題是你做的嗎\?/g, "")
-        .replace(/請問我會不會有問題呢\?/g, "");
+        .replace(/請問我會不會有問題呢\?/g, "")
+        .replace(/\(.*\)/g, "");
     },
   },*/
   /*{

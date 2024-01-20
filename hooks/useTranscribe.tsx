@@ -9,6 +9,7 @@ import { useCallback, useContext, useState } from "react";
 import { HistoryItem } from "./useHistory";
 import uuid from "react-native-uuid";
 import { RootContext } from "../context/RootContext";
+import RNFS from "react-native-fs";
 
 export function useTranscribe() {
   const { models } = useContext(RootContext);
@@ -46,7 +47,7 @@ export function useTranscribe() {
 
       try {
         await FFmpegKit.execute(
-          `-i ${sampleFilePath} -af "loudnorm,silenceremove=start_periods=1:start_threshold=-40dB:detection=peak,areverse,silenceremove=start_periods=1:start_threshold=-40dB:detection=peak,areverse" -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
+          `-i ${sampleFilePath} -af "loudnorm,silenceremove=start_periods=1:start_threshold=-45dB:detection=peak,areverse,silenceremove=start_periods=1:start_threshold=-45dB:detection=peak,areverse" -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
         );
       } catch {
         throw "ffmpeg failed";
@@ -62,12 +63,12 @@ export function useTranscribe() {
           setProgress(progress);
         },
         onNewSegments: (segments) => {
-          /*segments.segments = segments.segments.map((v) => {
+          segments.segments = segments.segments.map((v) => {
             if (model.filter) {
               v.text = model.filter(v.text);
             }
             return v;
-          });*/
+          });
           setSegMents(segments);
         },
       };
@@ -101,16 +102,15 @@ export function useTranscribe() {
 
       const results = await promise;
       if (!results.isAborted) {
-        /*if (model.filter) {
+        if (model.filter) {
           results.segments = results.segments.map((v) => {
             if (model.filter) {
-              v.text = model.filter(v.text);
+              v.text = model.filter(v.text).trim();
             }
             return v;
           });
-          results.result = results.segments.join(" ");
-        }*/
-        results.result = results.segments.map((v) => v.text.trim()).join("\n");
+        }
+        results.result = results.segments.map((v) => v.text).join("\n");
         setResult(results);
         setTranscribing(false);
         record.pending = false;
@@ -120,7 +120,10 @@ export function useTranscribe() {
         setHistory([record, ...history]);
       }
 
+      RNFS.unlink(newFilePath);
+
       // result: (The inference text result from audio file)
+      return results;
     },
     [models, history, setHistory]
   );
