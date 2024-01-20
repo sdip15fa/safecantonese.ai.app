@@ -41,9 +41,7 @@ export function useTranscribe() {
         throw "No model available! Please download a model in the models tab.";
       }
 
-      const splitFilePath = sampleFilePath.split(".");
-      splitFilePath.pop();
-      const newFilePath = splitFilePath.join(".") + ".wav";
+      const newFilePath = `${RNFS.CachesDirectoryPath}/${uuid.v4()}.wav`;
 
       try {
         await FFmpegKit.execute(
@@ -103,12 +101,14 @@ export function useTranscribe() {
       const results = await promise;
       if (!results.isAborted) {
         if (model.filter) {
-          results.segments = results.segments.map((v) => {
-            if (model.filter) {
-              v.text = model.filter(v.text).trim();
-            }
-            return v;
-          });
+          results.segments = results.segments
+            .map((v) => {
+              if (model.filter) {
+                v.text = model.filter(v.text).trim();
+              }
+              return v;
+            })
+            .filter(Boolean);
         }
         results.result = results.segments.map((v) => v.text).join("\n");
         setResult(results);
