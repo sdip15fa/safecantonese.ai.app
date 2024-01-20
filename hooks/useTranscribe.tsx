@@ -148,7 +148,7 @@ export function useTranscribe() {
                 }
                 return v;
               })
-              .filter(Boolean);
+              .filter(v => v.text);
           }
           results.result = results.segments.map((v) => v.text).join("\n");
           setResult(results);
