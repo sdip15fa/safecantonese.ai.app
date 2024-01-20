@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Button,
@@ -20,11 +20,13 @@ import uuid from "react-native-uuid";
 import RNFS from "react-native-fs";
 import { Tip, showTip } from "react-native-tip";
 import AudioPlayer from "../components/AudioPlayer";
+import { RootContext } from "../context/RootContext";
 
 export default function Page() {
   const { transcribe, result, transcribing, segments, progress, stop } =
     useContext(AppContext).transcribe;
   const { shareIntent } = useContext(AppContext);
+  const { sendNotifications } = useContext(RootContext);
   const [lastShareData, setLastShareData] = useState<string | null>(null);
   const [file, setFile] = useState<DocumentPicker.DocumentPickerAsset | null>(
     null
@@ -33,6 +35,24 @@ export default function Page() {
     error: string;
     dismissed: boolean;
   } | null>(null);
+
+  const startTranscribe = useCallback(
+    (uri: string, shareData?: string) => {
+      if (transcribe)
+        transcribe(uri, shareData)
+          .then((result) => {
+            if (result.result && !result.isAborted)
+              sendNotifications({
+                title: "Transcription completed!",
+                body: result.result,
+              });
+          })
+          .catch((err: any) => {
+            setError({ error: String(err), dismissed: false });
+          });
+    },
+    [transcribe, sendNotifications]
+  );
 
   useEffect(() => {
     if (
@@ -50,10 +70,8 @@ export default function Page() {
           name: filePath.split("/")[filePath.split("/").length - 1],
           uri: filePath,
         });
-        if (shareIntent.data)
-          transcribe(filePath, shareIntent.data).catch((err: any) => {
-            setError({ error: String(err), dismissed: false });
-          });
+
+        startTranscribe(filePath, shareIntent.data || undefined);
       });
     }
   }, [transcribe, lastShareData, shareIntent]);
@@ -177,7 +195,7 @@ There is currently no way to stop the transcription. You can close and re-open t
                 return stop();
               }
               if (file?.uri && transcribe) {
-                transcribe(file.uri);
+                startTranscribe(file.uri);
               }
             }}
             label={transcribing ? "Transcribing..." : "Transcribe"}

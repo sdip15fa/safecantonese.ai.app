@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { HistoryItem, useHistory } from "../hooks/useHistory";
+import { HistoryItem } from "../hooks/useHistory";
 import { TranscribeNewSegmentsResult, TranscribeResult } from "whisper.rn";
 import { Model } from "../hooks/useModels";
 import useShareIntent from "../hooks/useShareIntent";
@@ -13,7 +13,10 @@ interface AppContextInterface {
   };
   transcribe: {
     transcribe:
-      | ((sampleFilePath: string, shareData?: string) => Promise<void>)
+      | ((
+          sampleFilePath: string,
+          shareData?: string
+        ) => Promise<TranscribeResult>)
       | null;
     result: TranscribeResult | null;
     transcribing: boolean;
