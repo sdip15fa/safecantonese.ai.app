@@ -237,7 +237,7 @@ Once the "Transcribing..." notification appears, you are free to exit the app an
                   />
                 </Card>
               )}
-              {!!result?.result && (
+              {!!(result?.result || segments?.segments.length) && (
                 <View
                   style={{
                     flex: 1,
@@ -250,6 +250,13 @@ Once the "Transcribing..." notification appears, you are free to exit the app an
                     onPress={() => {
                       if (result?.result) {
                         Clipboard.setStringAsync(result?.result);
+                      } else if (segments) {
+                        Clipboard.setStringAsync(
+                          segments.segments
+                            .map((v) => v.text)
+                            .filter(Boolean)
+                            .join("\n")
+                        );
                       }
                     }}
                     style={{ marginRight: 10 }}
@@ -265,9 +272,18 @@ Once the "Transcribing..." notification appears, you are free to exit the app an
                   <Button
                     label="Share"
                     onPress={() => {
-                      Share.share({
-                        message: result?.result,
-                      });
+                      if (result?.result) {
+                        Share.share({
+                          message: result?.result,
+                        });
+                      } else if (segments) {
+                        Share.share({
+                          message: segments.segments
+                            .map((v) => v.text)
+                            .filter(Boolean)
+                            .join("\n"),
+                        });
+                      }
                     }}
                     iconSource={(props) => (
                       <Ionicons
