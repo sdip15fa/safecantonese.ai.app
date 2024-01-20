@@ -27,7 +27,8 @@ export const ModelsMeta = [
         .replace(/\(CC字幕製作.*\)/g, "")
         .replace(/by bwd6/g, "")
         .replace(/謝謝大家[收|觀]看.*/g, "")
-        .replace(/\(.*\)/g, "");
+        .replace(/\(.*\)/g, "")
+        .replace(/^拜拜$/, "");
     },
   },
   {
