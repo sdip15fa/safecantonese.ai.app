@@ -46,7 +46,7 @@ export function useTranscribe() {
 
       try {
         await FFmpegKit.execute(
-          `-i ${sampleFilePath} -af "loudnorm,silenceremove=start_periods=1:start_threshold=-50dB:detection=peak,aformat=dblp,areverse,silenceremove=start_periods=1:start_threshold=-50dB:detection=peak,aformat=dblp,areverse" -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
+          `-i ${sampleFilePath} -af "loudnorm,silenceremove=start_periods=1:start_threshold=-30dB:detection=peak,areverse,silenceremove=start_periods=1:start_threshold=-30dB:detection=peak,areverse" -acodec pcm_s16le -ac 1 -ar 16000 ${newFilePath}`
         );
       } catch {
         throw "ffmpeg failed";
@@ -101,7 +101,7 @@ export function useTranscribe() {
 
       const results = await promise;
       if (!results.isAborted) {
-      /*if (model.filter) {
+        /*if (model.filter) {
           results.segments = results.segments.map((v) => {
             if (model.filter) {
               v.text = model.filter(v.text);
@@ -110,6 +110,7 @@ export function useTranscribe() {
           });
           results.result = results.segments.join(" ");
         }*/
+        results.result = results.segments.map((v) => v.text.trim()).join("\n");
         setResult(results);
         setTranscribing(false);
         record.pending = false;
