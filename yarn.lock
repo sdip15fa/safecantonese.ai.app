@@ -1762,6 +1762,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@notifee/react-native@^7.8.2":
+  version "7.8.2"
+  resolved "https://registry.yarnpkg.com/@notifee/react-native/-/react-native-7.8.2.tgz#72d3199ae830b4128ddaef3c1c2f11604759c9c4"
+  integrity sha512-VG4IkWJIlOKqXwa3aExC3WFCVCGCC9BA55Ivg0SMRfEs+ruvYy/zlLANcrVGiPtgkUEryXDhA8SXx9+JcO8oLA==
+
 "@npmcli/fs@^1.0.0":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@npmcli/fs/-/fs-1.1.1.tgz#72f719fe935e687c56a4faecf3c03d06ba593257"
@@ -3627,6 +3632,11 @@ expo-av@~13.4.1:
   version "13.4.1"
   resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-13.4.1.tgz#83029b3202e64bf060f0a7a24591d93bf7ab728c"
   integrity sha512-0K8QEFzZeNGrppzYUs8wOtjOyPPkxzlVYbEHM6WzIQOG1uYYNOJkJB3aQHVFXHmz+AzoHwMrUjcschofwaMNeg==
+
+expo-battery@~7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/expo-battery/-/expo-battery-7.3.0.tgz#be99c20e99d104219e4abede43c502a712556dbc"
+  integrity sha512-+YBrQovEqeqP8/MdyRe9sYvfmzSgpJYDEOrCWsh49UwKeNjtBAnBTJ5cS0NDA/eHeS+WP+B0E5LfzYh78uzCwQ==
 
 expo-build-properties@^0.8.3:
   version "0.8.3"

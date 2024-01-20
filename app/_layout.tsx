@@ -6,6 +6,7 @@ import useShareIntent from "../hooks/useShareIntent";
 import AppContextProvider from "../context/AppContext";
 import RootContextProvider from "../context/RootContext";
 import TipProvider from "react-native-tip";
+import BatteryOptimizationScreen from "../components/BatteryOptimizationScreen";
 
 export default function Layout() {
   const router = useRouter();
@@ -22,6 +23,7 @@ export default function Layout() {
     <RootContextProvider>
       <AppContextProvider>
         <TipProvider statusBarTranslucent />
+        <BatteryOptimizationScreen />
         <Tabs
           screenOptions={{
             headerTintColor: "purple",
