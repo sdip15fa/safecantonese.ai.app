@@ -50,6 +50,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUri }) => {
   );
 
   useEffect(() => {
+    if (sound.current) {
+      sound.current.stopAsync();
+      setPlaying(false);
+    }
     const loadAudio = async () => {
       const s = await Audio.Sound.createAsync(
         { uri: audioUri },
