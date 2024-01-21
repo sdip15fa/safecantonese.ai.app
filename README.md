@@ -20,6 +20,10 @@ yarn install
 eas build --platform android --profile production --local
 ```
 
+## Support
+
+[telegram group](https://t.me/safecantoneseai)
+
 ## Maintenance
 
 Submit issues if you encounter any bugs or any feature requests.
