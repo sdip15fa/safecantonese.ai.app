@@ -15,6 +15,7 @@ are transcribed right in your device without ever leaving it.
 ## Build instructions
 
 ```bash
+git clone --recurse-submodules https://github.com/sdip15fa/safecantonese.ai.app
 yarn global install eas-cli
 yarn install
 eas build --platform android --profile production --local

@@ -1,0 +1,3 @@
+[submodule "assets/models"]
+	path = assets/models
+	url = https://huggingface.co/safecantonese/ggml-models
