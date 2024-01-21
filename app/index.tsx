@@ -23,8 +23,15 @@ import AudioPlayer from "../components/AudioPlayer";
 import { RootContext } from "../context/RootContext";
 
 export default function Page() {
-  const { transcribe, result, transcribing, segments, progress, stop } =
-    useContext(AppContext).transcribe;
+  const {
+    transcribe,
+    result,
+    transcribing,
+    segments,
+    progress,
+    stop,
+    inBackground,
+  } = useContext(AppContext).transcribe;
   const { shareIntent } = useContext(AppContext);
   const { sendNotifications } = useContext(RootContext);
   const [lastShareData, setLastShareData] = useState<string | null>(null);
@@ -219,6 +226,17 @@ Once the "Transcribing..." notification appears, you are free to exit the app an
                 progress={progress}
                 progressColor={Colors.purple10}
               />
+              {inBackground && (
+                <Text
+                  style={{
+                    marginHorizontal: 10,
+                    marginVertical: 5,
+                  }}
+                >
+                  You can now switch to other apps while waiting for the result,
+                  but DO NOT close this app.
+                </Text>
+              )}
               {(result?.result || segments?.segments.length) && (
                 <Card style={{ marginVertical: 10 }}>
                   <Card.Section

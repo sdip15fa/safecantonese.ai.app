@@ -25,6 +25,7 @@ interface AppContextInterface {
     segments: TranscribeNewSegmentsResult | null;
     progress: number;
     stop: (() => Promise<void>) | null;
+    inBackground: boolean;
   };
   models: Model[] | null;
   shareIntent: {

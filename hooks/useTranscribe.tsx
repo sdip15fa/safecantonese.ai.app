@@ -22,6 +22,7 @@ export function useTranscribe() {
   const [progress, setProgress] = useState(0);
   const [transcribing, setTranscribing] = useState(false);
   const [stop, setStop] = useState<(() => Promise<void>) | null>(null);
+  const [inBackground, setInBackground] = useState(false);
 
   const transcribe = useCallback(
     async (
@@ -37,6 +38,7 @@ export function useTranscribe() {
       setResult(null);
       setProgress(0);
       setTranscribing(true);
+      setInBackground(false);
 
       const model =
         models.find((m) => m.selected) ||
@@ -45,7 +47,7 @@ export function useTranscribe() {
       if (!model) {
         throw "No model available! Please download a model in the models tab.";
       }
-      
+
       const backgroundServiceOptions = {
         taskName: "Transcribe",
         taskTitle: "Transcribing...",
@@ -148,7 +150,7 @@ export function useTranscribe() {
                 }
                 return v;
               })
-              .filter(v => v.text);
+              .filter((v) => v.text);
           }
           results.result = results.segments.map((v) => v.text).join("\n");
           setResult(results);
@@ -164,12 +166,14 @@ export function useTranscribe() {
       };
 
       await BackgroundService.start(task, backgroundServiceOptions);
+      setInBackground(true);
 
       while (!results && !stopped) {
         await new Promise((resolve) => {
           setTimeout(resolve, 100);
         });
       }
+      setInBackground(false);
 
       return results || { isAborted: true, result: "", segments: [] };
     },
@@ -184,5 +188,6 @@ export function useTranscribe() {
     segments,
     progress,
     stop,
+    inBackground,
   };
 }
