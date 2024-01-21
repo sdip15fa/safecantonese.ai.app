@@ -1,12 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Badge,
-  Button,
-  Card,
-  Colors,
-  Text,
-  View,
-} from "react-native-ui-lib";
+import { Badge, Button, Card, Colors, Text, View } from "react-native-ui-lib";
 import { FlatList, Share, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import humanizeDuration from "humanize-duration";
@@ -31,7 +24,13 @@ export default function Page() {
     if (history) {
       if (search) {
         setFiltered([
-          ...history.filter((v) => v.result?.result.includes(search)),
+          ...history.filter((v) =>
+            search
+              .split(" ")
+              .map((s) => s.trim())
+              .filter(Boolean)
+              .some((s) => v.result?.result.includes(s))
+          ),
         ]);
       } else {
         setFiltered([...history]);
@@ -66,9 +65,9 @@ export default function Page() {
                 style={{
                   margin: 5,
                   marginHorizontal: 30,
-                  ...(index === (filtered?.length || 0) - 1  && {
-                    marginBottom: 20
-                  })
+                  ...(index === (filtered?.length || 0) - 1 && {
+                    marginBottom: 20,
+                  }),
                 }}
                 enableBlur
               >
