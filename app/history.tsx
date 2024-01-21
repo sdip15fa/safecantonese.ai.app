@@ -45,7 +45,7 @@ export default function Page() {
         placeholder="Search here..."
         onChangeText={setSearch}
         value={search}
-        style={{ marginHorizontal: 20 }}
+        style={{ marginHorizontal: 20, marginVertical: 5 }}
       />
       {!history ? (
         <Text>Loading...</Text>
@@ -103,7 +103,9 @@ export default function Page() {
                     flex: 1,
                     flexDirection: "row",
                     justifyContent: "center",
-                    margin: 10,
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    margin: 7
                   }}
                 >
                   <Button
@@ -113,7 +115,7 @@ export default function Page() {
                         Clipboard.setStringAsync(item.result?.result);
                       }
                     }}
-                    style={{ marginRight: 5 }}
+                    style={{ margin: 3 }}
                     iconSource={(props) => (
                       <Icon
                         name="copy"
@@ -131,7 +133,7 @@ export default function Page() {
                           message: item.result.result,
                         });
                     }}
-                    style={{ marginRight: 5 }}
+                    style={{ margin: 3 }}
                     iconSource={(props) => (
                       <Icon
                         name="share"
@@ -149,6 +151,7 @@ export default function Page() {
                       ]);
                     }}
                     backgroundColor={Colors.$iconDanger}
+                    style={{ margin: 3 }}
                     iconSource={(props) => (
                       <Icon
                         name="trash"

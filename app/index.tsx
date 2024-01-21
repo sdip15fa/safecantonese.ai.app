@@ -112,7 +112,7 @@ export default function Page() {
         </View>
       </Dialog>
       <ScrollView style={{ paddingHorizontal: 24 }}>
-        <View style={{ flex: 1, marginHorizontal: 10 }}>
+        <View style={{ flex: 1, margin: 5, marginHorizontal: 10 }}>
           <Tip
             id="help"
             body={`To transcribe, select a file from your device using the "Select File" button, then press the "Transcribe" button. Alternatively, you can share an audio file from any application.
@@ -243,6 +243,8 @@ Once the "Transcribing..." notification appears, you are free to exit the app an
                     flex: 1,
                     flexDirection: "row",
                     justifyContent: "center",
+                    flexWrap: "wrap",
+                    alignItems: "center",
                   }}
                 >
                   <Button
@@ -259,7 +261,7 @@ Once the "Transcribing..." notification appears, you are free to exit the app an
                         );
                       }
                     }}
-                    style={{ marginRight: 10 }}
+                    style={{ margin: 5 }}
                     iconSource={(props) => (
                       <Ionicons
                         name="copy"
@@ -271,6 +273,7 @@ Once the "Transcribing..." notification appears, you are free to exit the app an
                   />
                   <Button
                     label="Share"
+                    style={{ margin: 5 }}
                     onPress={() => {
                       if (result?.result) {
                         Share.share({

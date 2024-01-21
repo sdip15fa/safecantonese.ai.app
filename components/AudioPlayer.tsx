@@ -68,7 +68,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUri }) => {
 
   return (
     <View flex padding-10>
-      <View row centerV>
+      <View row centerV style={{ flexWrap: "wrap", alignItems: "center" }}>
         <Button
           label={isPlaying ? "Pause" : "Play"}
           onPress={playPause}
