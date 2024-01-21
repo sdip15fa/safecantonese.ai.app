@@ -45,7 +45,7 @@ export default function Page() {
         placeholder="Search here..."
         onChangeText={setSearch}
         value={search}
-        style={{ marginHorizontal: 20, marginVertical: 5 }}
+        style={{ marginHorizontal: 20, marginTop: 5 }}
       />
       {!history ? (
         <Text>Loading...</Text>
@@ -89,6 +89,20 @@ export default function Page() {
                   style={{ marginHorizontal: 10, marginVertical: 5 }}
                   backgroundColor={Colors.purple30}
                 />
+                {!item.shareData && (
+                  <Badge
+                    label={`File: ${item.fileName}`}
+                    style={{ marginHorizontal: 10, marginVertical: 5 }}
+                    backgroundColor={Colors.purple30}
+                  />
+                )}
+                {item.shareData && (
+                  <Badge
+                    label={`External: ${item.shareData.replace("content://", "").split("/")[0]}`}
+                    style={{ marginHorizontal: 10, marginVertical: 5 }}
+                    backgroundColor={Colors.purple30}
+                  />
+                )}
                 <Card.Section
                   content={[
                     {
@@ -105,7 +119,7 @@ export default function Page() {
                     justifyContent: "center",
                     flexWrap: "wrap",
                     alignItems: "center",
-                    margin: 7
+                    margin: 7,
                   }}
                 >
                   <Button
