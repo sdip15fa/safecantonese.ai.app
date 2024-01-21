@@ -121,7 +121,7 @@ Note that transcribing may take a long time. You can try switching to a faster m
 
 There is currently no way to stop the transcription. You can close and re-open the app instead.
 
-Once the "Transcribing..." notification appears, you are free to exit the app and wait for your audio to be transcribed.`}
+Once the "Transcribing..." notification appears, you are free to exit the app and wait for your audio to be transcribed. (DO NOT kill the app)`}
             showItemPulseAnimation={false}
           >
             <Button
