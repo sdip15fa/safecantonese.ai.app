@@ -14,7 +14,7 @@ export const ModelsMeta = [
   {
     name: "whisper-small-yue-mdcc",
     downloadUrl:
-      "https://huggingface.co/wcyat/whisper-small-yue-mdcc/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+      "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-small-yue-mdcc.bin?download=true",
     description:
       "Performs well with short and long audios. May omit punctuations. (datasets: common-voice/yue, mdcc)",
     downloadStatus: {
@@ -34,7 +34,7 @@ export const ModelsMeta = [
   {
     name: "whisper-small-yue-hk",
     downloadUrl:
-      "https://huggingface.co/wcyat/whisper-small-yue-hk-retrained/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+      "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-small-yue-hk.bin?download=true",
     description:
       "Performs well with short audios. Long audios may result in chaotic output. (datasets: common-voice/yue, common-voice/zh-hk)",
     downloadStatus: {
@@ -52,14 +52,14 @@ export const ModelsMeta = [
     },
   },
   {
-    name: "whisper-base-yue-hk",
+    name: "whisper-base-yue-hk-mdcc",
     downloadUrl:
-      "https://huggingface.co/wcyat/whisper-base-yue-hk/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+      "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-base-yue-hk-mdcc.bin?download=true",
     description:
-      "Faster at the cost of reduced performance. (datasets: common-voice/yue, common-voice/zh-hk)",
+      "Faster at the cost of reduced performance. (datasets: common-voice/yue, common-voice/zh-hk, mdcc)",
     downloadStatus: {
       completed: true,
-      path: require("../assets/models/whisper-base-yue-hk.bin"),
+      path: require("../assets/models/whisper-base-yue-hk-mdcc.bin"),
     },
     no_delete: true,
     filter: (text: string) => {
@@ -67,14 +67,17 @@ export const ModelsMeta = [
         .replace(/你別再問我了.*/g, "")
         .replace(/請問歷史上有否.*/g, "")
         .replace(/請問.*嗎(\?)/g, "")
-        .replace(/\(.*\)/g, "");
+        .replace(/請問.*呢(\?)/g, "")
+        .replace(/請.*吧(\?)/g, "")
+        .replace(/\(.*\)/g, "")
+        .replace(/^祝$/, "");
       // .replace(/梁國雄議員/g, "");
     },
   },
   /*{
     name: "whisper-base-yue-mdcc",
     downloadUrl:
-      "https://huggingface.co/wcyat/whisper-base-yue-mdcc/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+      "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-base-yue-mdcc.bin?download=true",
     description:
       "Faster at the cost of reduced performance. (datasets: common-voice/yue, mdcc)",
     downloadStatus: {
@@ -92,7 +95,7 @@ export const ModelsMeta = [
   /*{
     name: "whisper-small-yue-hk-mdcc",
     downloadUrl:
-      "https://huggingface.co/wcyat/whisper-small-yue-hk-mdcc-retrained/resolve/main/ggml/ggml-model-q5_0.bin?download=true",
+      "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-small-yue-hk-mdcc.bin?download=true",
     description:
       "Performs well with long audios. May omit punctuations. (datasets: common-voice/yue, common-voice/zh-hk, mdcc)",
   },*/
