@@ -1,0 +1,88 @@
+name: Release APKs on Tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+          submodules: "recursive"
+
+      - name: Set outputs
+        id: vars
+        run: |
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: yarn
+
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: create build directory
+        run: mkdir build
+
+      - name: 🚀 Build app (android production)
+        run: eas build --local --non-interactive --platform android --profile production --output build/v${{ env.RELEASE_VERSION }}.production.apk
+
+      - name: 🚀 Build app (android development)
+        run: eas build --local --non-interactive --platform android --profile development --output build/v${{ env.RELEASE_VERSION }}.development.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android production apk
+          path: build/v${{ env.RELEASE_VERSION }}.production.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android development apk
+          path: build/v${{ env.RELEASE_VERSION }}.development.apk
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.RELEASE_VERSION }}
+          release_name: Release ${{ env.RELEASE_VERSION }}
+          draft: false
+          prerelease: false
+
+      - name: Upload production APK
+        id: upload-production-apk
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/v${{ env.RELEASE_VERSION }}.production.apk
+          asset_name: v${{ env.RELEASE_VERSION }}.production.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: Upload development APK
+        id: upload-development-apk
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/v${{ env.RELEASE_VERSION }}.development.apk
+          asset_name: v${{ env.RELEASE_VERSION }}.development.apk
+          asset_content_type: application/vnd.android.package-archive
