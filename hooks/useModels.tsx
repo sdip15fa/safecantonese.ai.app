@@ -28,7 +28,8 @@ export const ModelsMeta = [
         .replace(/by bwd6/g, "")
         .replace(/謝謝大家[收|觀]看.*/g, "")
         .replace(/\(.*\)/g, "")
-        .replace(/^拜拜$/, "");
+        .replace(/^拜拜$/, "")
+        .replace(/^謝謝$/, "");
     },
   },
   {
