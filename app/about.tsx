@@ -112,8 +112,10 @@ export default function Page() {
           </Text>
           <Text style={{ margin: 5 }}>
             None of your audio files ever leave your device. We do not host a
-            server and do not collect data of any kind. Internet connection is
-            unused and for android it is disabled.
+            server and do not collect data of any kind. To ensure maximum privacy,
+            the app does not use the Internet for any purposes. For Android, the 
+            Internet permission is disabled and it is not possible for the app
+            to transmit data to any servers.
           </Text>
           <Text text40 style={{ margin: 5 }}>
             Disclaimer
