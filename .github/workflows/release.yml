@@ -1,4 +1,4 @@
-name: Release APKs on Tag
+name: Release Binaries on Tag
 
 on:
   push:
@@ -39,21 +39,21 @@ jobs:
       - name: create build directory
         run: mkdir build
 
-      - name: 🚀 Build app (android production)
-        run: eas build --local --non-interactive --platform android --profile production --output build/v${{ env.RELEASE_VERSION }}.production.apk
+      - name: Build app bundle (android)
+        run:  NODE_OPTIONS=--max_old_space_size=4096 eas build --local --non-interactive --platform android --profile aab --output build/v${{ env.RELEASE_VERSION }}.aab
 
-      - name: 🚀 Build app (android development)
-        run: eas build --local --non-interactive --platform android --profile development --output build/v${{ env.RELEASE_VERSION }}.development.apk
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: android production apk
-          path: build/v${{ env.RELEASE_VERSION }}.production.apk
+      - name: 🚀 Build apk (android)
+        run: eas build --local --non-interactive --platform android --profile production --output build/v${{ env.RELEASE_VERSION }}.apk
 
       - uses: actions/upload-artifact@v4
         with:
-          name: android development apk
-          path: build/v${{ env.RELEASE_VERSION }}.development.apk
+          name: android apk
+          path: build/v${{ env.RELEASE_VERSION }}.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android aab
+          path: build/v${{ env.RELEASE_VERSION }}.aab
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -65,24 +65,24 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload production APK
-        id: upload-production-apk
+      - name: Upload APK
+        id: upload-apk
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/v${{ env.RELEASE_VERSION }}.production.apk
-          asset_name: v${{ env.RELEASE_VERSION }}.production.apk
+          asset_path: build/v${{ env.RELEASE_VERSION }}.apk
+          asset_name: v${{ env.RELEASE_VERSION }}.apk
           asset_content_type: application/vnd.android.package-archive
 
-      - name: Upload development APK
-        id: upload-development-apk
+      - name: Upload AAB
+        id: upload-aab
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/v${{ env.RELEASE_VERSION }}.development.apk
-          asset_name: v${{ env.RELEASE_VERSION }}.development.apk
-          asset_content_type: application/vnd.android.package-archive
+          asset_path: build/v${{ env.RELEASE_VERSION }}.aab
+          asset_name: v${{ env.RELEASE_VERSION }}.aab
+          asset_content_type: application/x-authorware-bin
