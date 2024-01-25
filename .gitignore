@@ -40,3 +40,4 @@ yarn-error.*
 *.aab
 archives
 *.log
+.idea/
