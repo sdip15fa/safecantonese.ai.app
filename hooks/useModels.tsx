@@ -3,6 +3,8 @@ import RNFS from "react-native-fs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
 
+export const modelsDir = `${FileSystem.documentDirectory}/models`;
+
 export const ModelsMeta = [
   /*{
     name: "whisper-small-yue",
@@ -19,7 +21,7 @@ export const ModelsMeta = [
       "Performs well with short and long audios. May omit punctuations. (datasets: common-voice/yue, mdcc)",
     downloadStatus: {
       completed: true,
-      path: require("../assets/models/whisper-small-yue-mdcc.bin"),
+      path: `${modelsDir}/whisper-small-yue-mdcc.bin`,
     },
     no_delete: true,
     filter: (text: string) => {
@@ -40,7 +42,7 @@ export const ModelsMeta = [
       "Performs well with short audios. Long audios may result in chaotic output. (datasets: common-voice/yue, common-voice/zh-hk)",
     downloadStatus: {
       completed: true,
-      path: require("../assets/models/whisper-small-yue-hk.bin"),
+      path: `${modelsDir}/whisper-small-yue-hk.bin`,
     },
     no_delete: true,
     filter: (text: string) => {
@@ -60,7 +62,7 @@ export const ModelsMeta = [
       "Faster at the cost of reduced performance. (datasets: common-voice/yue, common-voice/zh-hk, mdcc)",
     downloadStatus: {
       completed: true,
-      path: require("../assets/models/whisper-base-yue-hk-mdcc.bin"),
+      path: `${modelsDir}/whisper-base-yue-hk-mdcc.bin`,
     },
     no_delete: true,
     filter: (text: string) => {
@@ -121,8 +123,6 @@ export interface Model {
 }
 
 export default function useModels() {
-  const modelsDir = `${FileSystem.documentDirectory}/models`;
-
   const [models, setModels] = useState<Model[] | null>(null);
 
   useEffect(() => {
