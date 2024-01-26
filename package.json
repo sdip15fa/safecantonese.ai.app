@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@config-plugins/ffmpeg-kit-react-native": "^6.0.0",
-    "@notifee/react-native": "^7.8.2",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/blur": "^4.3.2",
     "@react-native-community/datetimepicker": "7.2.0",
@@ -19,9 +18,9 @@
     "@types/humanize-duration": "^3.27.4",
     "@types/react-native-share-menu": "^5.0.5",
     "@types/react-native-vector-icons": "^6.4.18",
+    "@types/react-native-version-check": "^3.4.8",
     "expo": "~49.0.15",
     "expo-av": "~13.4.1",
-    "expo-battery": "~7.3.0",
     "expo-build-properties": "^0.8.3",
     "expo-clipboard": "~4.3.1",
     "expo-constants": "~14.4.2",
@@ -52,6 +51,8 @@
     "react-native-ui-lib": "^7.14.4",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^10.0.3",
+    "react-native-version-check": "^3.4.7",
+    "react-native-zip-archive": "^6.1.0",
     "whisper.rn": "^0.3.9"
   },
   "resolutions": {
