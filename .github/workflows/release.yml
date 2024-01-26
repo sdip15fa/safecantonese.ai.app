@@ -86,3 +86,14 @@ jobs:
           asset_path: build/v${{ env.RELEASE_VERSION }}.aab
           asset_name: v${{ env.RELEASE_VERSION }}.aab
           asset_content_type: application/x-authorware-bin
+      
+      - name: Upload obb
+        id: upload-obb
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: assets/models/models.zip
+          asset_name: main.1.me.wcyat.safecantonese.ai.obb
+          asset_content_type: application/zip
