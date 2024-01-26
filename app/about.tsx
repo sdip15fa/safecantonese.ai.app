@@ -49,11 +49,11 @@ export default function Page() {
             style={{ color: "blue", margin: 5 }}
             onPress={() =>
               Linking.openURL(
-                "https://github.com/sdip15fa/safecantonese.ai.app/releases/tag/1.4.5"
+                "https://github.com/sdip15fa/safecantonese.ai.app/releases/tag/1.5.0"
               )
             }
           >
-            1.4.5
+            1.5.0
           </Text>
           <Text text40 style={{ margin: 5 }}>
             Source Code
@@ -78,7 +78,7 @@ export default function Page() {
             style={{ color: "blue", margin: 5 }}
             onPress={() =>
               Linking.openURL(
-                "https://github.com/sdip15fa/safecantonese.ai.app/blob/1.4.5/LICENSE.md"
+                "https://github.com/sdip15fa/safecantonese.ai.app/blob/1.5.0/LICENSE.md"
               )
             }
           >
@@ -88,7 +88,7 @@ export default function Page() {
           style={{ color: "blue", margin: 5 }}
             onPress={() => {
               Linking.openURL(
-                "https://github.com/sdip15fa/safecantonese.ai.app/blob/1.4.5/third-party-licenses.txt"
+                "https://github.com/sdip15fa/safecantonese.ai.app/blob/1.5.0/third-party-licenses.txt"
               );
             }}
           >
