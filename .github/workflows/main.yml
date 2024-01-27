@@ -38,15 +38,15 @@ jobs:
 
       - name: create build directory
         run: mkdir build
+      
+      - name: 🚀 Build aab
+        run: eas build --local --non-interactive --platform android --profile aab --output build/${{ steps.vars.outputs.sha_short }}.aab
 
       - name: 🚀 Build app (android production)
         run: eas build --local --non-interactive --platform android --profile production --output build/${{ steps.vars.outputs.sha_short }}.production.apk
 
       - name: 🚀 Build app (android development)
         run: eas build --local --non-interactive --platform android --profile development --output build/${{ steps.vars.outputs.sha_short }}.development.apk
-
-      - name: 🚀 Build aab
-        run: eas build --local --non-interactive --platform android --profile aab --output build/${{ steps.vars.outputs.sha_short }}.aab
 
       - uses: actions/upload-artifact@v4
         with:
