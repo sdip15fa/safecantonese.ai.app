@@ -5,7 +5,6 @@ import { Model } from "../hooks/useModels";
 import useShareIntent from "../hooks/useShareIntent";
 import { RootContext } from "./RootContext";
 import { useTranscribe } from "../hooks/useTranscribe";
-import useObb, { OBB } from "../hooks/useObb";
 
 interface AppContextInterface {
   history: {
@@ -34,7 +33,6 @@ interface AppContextInterface {
     mimetype: string | null;
     extraData?: object;
   };
-  obb: OBB[];
 }
 
 export const AppContext = createContext<AppContextInterface>(
@@ -48,7 +46,6 @@ export default function AppContextProvider(props: {
   const { models } = useContext(RootContext);
   const transcribe = useTranscribe();
   const { history } = useContext(RootContext);
-  const obb = useObb();
   return (
     <AppContext.Provider
       value={{
@@ -56,7 +53,6 @@ export default function AppContextProvider(props: {
         models,
         history,
         transcribe,
-        obb
       }}
     >
       {props.children}

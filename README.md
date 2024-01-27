@@ -21,10 +21,6 @@ yarn install
 eas build --platform android --profile production --local
 ```
 
-### OBB
-
-The app utilizes obb to store model files. The zip file can be found in `assets/models/models.zip`. Please rename it to main.1.me.wcyat.safecantonese.ai.obb and place it in `/storage/emulated/0/Android/obb/me.wcyat.safecantoneseai/`.
-
 ## Support
 
 [telegram group](https://t.me/safecantoneseai)

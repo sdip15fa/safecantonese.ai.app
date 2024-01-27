@@ -1,0 +1,11 @@
+// In the asset pack’s build.gradle file:
+plugins {
+  id 'com.android.asset-pack'
+}
+
+assetPack {
+    packName = "models_asset_pack" // Directory name for the asset pack
+    dynamicDelivery {
+        deliveryType = "install-time"
+    }
+}
