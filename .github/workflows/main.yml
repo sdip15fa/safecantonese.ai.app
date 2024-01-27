@@ -40,7 +40,7 @@ jobs:
         run: mkdir build
       
       - name: 🚀 Build aab
-        run: eas build --local --non-interactive --platform android --profile aab --output build/${{ steps.vars.outputs.sha_short }}.aab
+        run: NODE_OPTIONS=--max_old_space_size=4096 eas build --local --non-interactive --platform android --profile aab --output build/${{ steps.vars.outputs.sha_short }}.aab
 
       - name: 🚀 Build app (android production)
         run: eas build --local --non-interactive --platform android --profile production --output build/${{ steps.vars.outputs.sha_short }}.production.apk
