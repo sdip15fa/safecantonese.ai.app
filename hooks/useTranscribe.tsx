@@ -110,6 +110,7 @@ export function useTranscribe() {
 
         const whisperContext = await initWhisper({
           filePath: model.downloadStatus?.path,
+          isBundleAsset: true,
         });
 
         const recordId = String(uuid.v4());

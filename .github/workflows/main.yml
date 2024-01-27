@@ -1,12 +1,12 @@
 on:
   pull_request:
-      branches:
-        - master
-        - dev
+    branches:
+      - master
+      - dev
   push:
-      branches:
-        - master
-        - dev
+    branches:
+      - master
+      - dev
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +16,7 @@ jobs:
         with:
           lfs: true
           submodules: "recursive"
-        
+
       - name: Set outputs
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
@@ -45,12 +45,20 @@ jobs:
       - name: 🚀 Build app (android development)
         run: eas build --local --non-interactive --platform android --profile development --output build/${{ steps.vars.outputs.sha_short }}.development.apk
 
+      - name: 🚀 Build aab
+        run: eas build --local --non-interactive --platform android --profile aab --output build/${{ steps.vars.outputs.sha_short }}.aab
+
       - uses: actions/upload-artifact@v4
         with:
           name: android production apk
           path: build/${{ steps.vars.outputs.sha_short }}.production.apk # or path/to/artifact
-          
+
       - uses: actions/upload-artifact@v4
         with:
           name: android development apk
           path: build/${{ steps.vars.outputs.sha_short }}.development.apk # or path/to/artifact
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android app bundle
+          path: build/${{ steps.vars.outputs.sha_short }}.aab # or path/to/artifact

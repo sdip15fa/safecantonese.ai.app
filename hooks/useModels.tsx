@@ -3,7 +3,7 @@ import RNFS from "react-native-fs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
 
-export const modelsDir = `${FileSystem.documentDirectory}/models`;
+export const modelsDir = `models`;
 
 export const ModelsMeta = [
   /*{
@@ -255,14 +255,6 @@ export default function useModels() {
       }) || null
     );
   }, [models]);
-
-  useEffect(() => {
-    (async () => {
-      if (!(await RNFS.exists(modelsDir))) {
-        RNFS.mkdir(modelsDir);
-      }
-    })();
-  });
 
   return models;
 }
