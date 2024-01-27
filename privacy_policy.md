@@ -28,4 +28,4 @@ We may update this Privacy Policy from time to time. If there are any significan
 
 If you have any questions or concerns about this Privacy Policy or SafeCantonese AI, please contact us at wcyat@wcyat.me.
 
-By usingSafeCantonese AI, you agree to the terms outlined in this Privacy Policy. If you do not agree with these terms, please refrain from using the app.
+By using SafeCantonese AI, you agree to the terms outlined in this Privacy Policy. If you do not agree with these terms, please refrain from using the app.
