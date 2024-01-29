@@ -19,7 +19,7 @@ jobs:
       
       - name: change app id
         if: github.ref == 'refs/heads/dev'
-        run: find ./ -type f -exec sed -i 's/me.wcyat.safecantoneseai/me.wcyat.safecantoneseaidev/g' {} \;
+        run: find ./ -path ./.git -prune -o -path ./node_modules -prune -o -path ./assets -prune -o -path ./.github -prune -o -type f -exec sed -i 's/me.wcyat.safecantoneseai/me.wcyat.safecantoneseaidev/g' {} \;
 
       - name: Set outputs
         id: vars
