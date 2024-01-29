@@ -19,7 +19,7 @@ jobs:
       
       - name: change app id
         if: github.ref == 'refs/heads/dev'
-        run: find ./ -type f -exec sed -i -e 's/me.wcyat.safecantoneseai/me.wcyat.safecantoneseaidev/g' {} \ 
+        run: find ./ -type f -exec sed -i 's/me.wcyat.safecantoneseai/me.wcyat.safecantoneseaidev/g' {} \;
 
       - name: Set outputs
         id: vars
