@@ -32,7 +32,7 @@ export default function Page() {
     stop,
     inBackground,
   } = useContext(AppContext).transcribe;
-  const { shareIntent } = useContext(AppContext);
+  const { shareIntent, setShareIntent } = useContext(AppContext).shareIntent;
   const { sendNotifications } = useContext(RootContext);
   const [lastShareData, setLastShareData] = useState<string | null>(null);
   const [file, setFile] = useState<DocumentPicker.DocumentPickerAsset | null>(
@@ -65,6 +65,7 @@ export default function Page() {
 
   useEffect(() => {
     if (
+      shareIntent &&
       shareIntent.data &&
       !transcribing &&
       shareIntent.data !== lastShareData &&
@@ -72,7 +73,7 @@ export default function Page() {
     ) {
       setLastShareData(shareIntent.data);
       const filePath = `${RNFS.CachesDirectoryPath}/${uuid.v4()}.${
-        shareIntent.mimetype?.split(";")?.[0]?.split("/")?.[1] || "mp3"
+        shareIntent.mimeType?.split(";")?.[0]?.split("/")?.[1] || "mp3"
       }`;
       RNFS.copyFile(shareIntent.data, filePath).then(() => {
         const fileName = filePath.split("/").pop() || "";
@@ -86,6 +87,9 @@ export default function Page() {
           fileName || undefined,
           shareIntent.data || undefined
         );
+
+        setShareIntent(null);
+        setLastShareData(null);
       });
     }
   }, [transcribe, lastShareData, shareIntent]);
@@ -173,7 +177,7 @@ Once the "Transcribing..." notification appears, you are free to exit the app an
               }).then((result) => {
                 if (!result.canceled) {
                   setFile(result.assets[0]);
-                  setLastShareData(null);
+                  // setLastShareData(null);
                 }
               });
             }}

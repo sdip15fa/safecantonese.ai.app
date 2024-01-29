@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 import { HistoryItem } from "../hooks/useHistory";
 import { TranscribeNewSegmentsResult, TranscribeResult } from "whisper.rn";
 import { Model } from "../hooks/useModels";
-import useShareIntent from "../hooks/useShareIntent";
+import useShareIntent, { ShareIntent } from "../hooks/useShareIntent";
 import { RootContext } from "./RootContext";
 import { useTranscribe } from "../hooks/useTranscribe";
 
@@ -29,9 +29,8 @@ interface AppContextInterface {
   };
   models: Model[] | null;
   shareIntent: {
-    data: string | null;
-    mimetype: string | null;
-    extraData?: object;
+    shareIntent: ShareIntent | null;
+    setShareIntent: React.Dispatch<React.SetStateAction<ShareIntent | null>>;
   };
 }
 
