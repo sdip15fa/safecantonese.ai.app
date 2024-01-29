@@ -44,6 +44,9 @@ jobs:
 
       - name: 🚀 Build apk (android)
         run: eas build --local --non-interactive --platform android --profile production --output build/v${{ env.RELEASE_VERSION }}.apk
+      
+      - name: add models to apks
+        run: zip -ur build/v${{ env.RELEASE_VERSION }}.apk assets/models/*.bin
 
       - uses: actions/upload-artifact@v4
         with:

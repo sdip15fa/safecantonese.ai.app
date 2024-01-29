@@ -16,6 +16,10 @@ jobs:
         with:
           lfs: true
           submodules: "recursive"
+      
+      - name: change app id
+        if: github.ref == 'refs/heads/dev'
+        run: find ./ -type f -exec sed -i -e 's/me.wcyat.safecantoneseai/me.wcyat.safecantoneseaidev/g' {} \ 
 
       - name: Set outputs
         id: vars
@@ -35,7 +39,7 @@ jobs:
 
       - name: 📦 Install dependencies
         run: yarn install
-
+      
       - name: create build directory
         run: mkdir build
       
@@ -47,6 +51,11 @@ jobs:
 
       - name: 🚀 Build app (android development)
         run: eas build --local --non-interactive --platform android --profile development --output build/${{ steps.vars.outputs.sha_short }}.development.apk
+
+      - name: add models to apks
+        run: |
+          zip -ur build/${{ steps.vars.outputs.sha_short }}.production.apk assets/models/*.bin
+          zip -ur build/${{ steps.vars.outputs.sha_short }}.development.apk assets/models/*.bin
 
       - uses: actions/upload-artifact@v4
         with:
