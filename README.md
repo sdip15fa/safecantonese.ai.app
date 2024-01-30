@@ -7,6 +7,10 @@ transcription to the general public, backed by whisper speech-to-text
 models developed by OpenAI and fine-tuned by me. Your audio files
 are transcribed right in your device without ever leaving it.
 
+## Download
+
+[![Play Store](./images/google-play-badge.png)](https://play.google.com/store/apps/details?id=me.wcyat.safecantoneseai&pcampaignid=web_share)
+
 ## Technologies
 
 - react native (expo)
