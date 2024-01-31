@@ -82,12 +82,12 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: android production apk
-          path: ${{ steps.sign_app.signedReleaseFile1 }} # or path/to/artifact
+          path: build/${{ steps.vars.outputs.sha_short }}.production-signed.apk # or path/to/artifact
 
       - uses: actions/upload-artifact@v4
         with:
           name: android development apk
-          path: ${{ steps.sign_app.signedReleaseFile0 }} # or path/to/artifact
+          path: build/${{ steps.vars.outputs.sha_short }}.development-signed.apk # or path/to/artifact
 
       - uses: actions/upload-artifact@v4
         with:
