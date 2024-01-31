@@ -69,7 +69,6 @@ jobs:
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
-          customArgs: --v1-signing-enabled,true,--v2-signing-enabled,true
 
       - uses: actions/upload-artifact@v4
         with:
