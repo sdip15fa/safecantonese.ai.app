@@ -21,6 +21,12 @@ jobs:
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
+      - name: get build tools version
+        id: build_tools_version
+        run: | 
+          echo "version=$(ls /usr/local/lib/android/sdk/build-tools/ | head -1)" >> $GITHUB_OUTPUT
+          ls /usr/local/lib/android/sdk/build-tools/ | head -1
+
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
@@ -47,7 +53,7 @@ jobs:
 
       - name: change app id (dev)
         run: find ./ -path ./.git -prune -o -path ./node_modules -prune -o -path ./assets -prune -o -path ./.github -prune -o -type f -exec sed -i 's/me.wcyat.safecantoneseai/me.wcyat.safecantoneseaidev/g' {} \;
-      
+
       - name: allow internet (dev)
         run: sed -i '/<uses-permission android:name="android.permission.INTERNET" tools:node="remove"\/>/d' android/app/src/main/AndroidManifest.xml
 
@@ -59,7 +65,7 @@ jobs:
           zip -ur build/${{ steps.vars.outputs.sha_short }}.production.apk assets/models/*.bin
           zip -ur build/${{ steps.vars.outputs.sha_short }}.development.apk assets/models/*.bin
 
-      - uses: upup-company/apksigner-android@v1
+      - uses: r0adkll/sign-android-release@v1
         name: Sign app APK
         # ID used to access action output
         id: sign_app
@@ -69,6 +75,9 @@ jobs:
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          # override default build-tools version (29.0.3) -- optional
+          BUILD_TOOLS_VERSION: ${{ steps.build_tools_version.outputs.version }}
 
       - uses: actions/upload-artifact@v4
         with:
