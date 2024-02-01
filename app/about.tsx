@@ -42,7 +42,7 @@ export default function Page() {
           >
             wcyat@wcyat.me
           </Text>
-          <Text text40 style={{margin: 5}}>
+          <Text text40 style={{ margin: 5 }}>
             Version
           </Text>
           <Text
@@ -85,7 +85,7 @@ export default function Page() {
             GPL-3.0-or-later
           </Text>
           <Text
-          style={{ color: "blue", margin: 5 }}
+            style={{ color: "blue", margin: 5 }}
             onPress={() => {
               Linking.openURL(
                 "https://github.com/sdip15fa/safecantonese.ai.app/blob/1.6.2/third-party-licenses.txt"
@@ -110,12 +110,15 @@ export default function Page() {
           <Text text40 style={{ margin: 5 }}>
             Privacy Policy
           </Text>
-          <Text style={{ margin: 5 }}>
-            None of your audio files ever leave your device. We do not host a
-            server and do not collect data of any kind. To ensure maximum privacy,
-            the app does not use the Internet for any purposes. For Android, the 
-            Internet permission is disabled and it is not possible for the app
-            to transmit data to any servers.
+          <Text
+            style={{ color: "blue", margin: 5 }}
+            onPress={() =>
+              Linking.openURL(
+                "https://github.com/sdip15fa/safecantonese.ai.app/blob/master/privacy_policy.md"
+              )
+            }
+          >
+            privacy_policy.md
           </Text>
           <Text text40 style={{ margin: 5 }}>
             Disclaimer
