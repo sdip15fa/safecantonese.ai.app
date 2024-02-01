@@ -3,7 +3,7 @@ name: Release Binaries on Tag
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 jobs:
   release:
@@ -20,6 +20,12 @@ jobs:
         run: |
           echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: get build tools version
+        id: build_tools_version
+        run: |
+          echo "version=$(ls /usr/local/lib/android/sdk/build-tools/ | head -1)" >> $GITHUB_OUTPUT
+          ls /usr/local/lib/android/sdk/build-tools/ | head -1
 
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
@@ -40,18 +46,32 @@ jobs:
         run: mkdir build
 
       - name: Build app bundle (android)
-        run:  NODE_OPTIONS=--max_old_space_size=4096 eas build --local --non-interactive --platform android --profile aab --output build/v${{ env.RELEASE_VERSION }}.aab
+        run: NODE_OPTIONS=--max_old_space_size=4096 eas build --local --non-interactive --platform android --profile aab --output build/v${{ env.RELEASE_VERSION }}.aab
 
       - name: 🚀 Build apk (android)
         run: eas build --local --non-interactive --platform android --profile production --output build/v${{ env.RELEASE_VERSION }}.apk
-      
+
       - name: add models to apks
         run: zip -ur build/v${{ env.RELEASE_VERSION }}.apk assets/models/*.bin
+
+      - uses: r0adkll/sign-android-release@v1
+        name: Sign app APK
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDirectory: build/
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          # override default build-tools version (29.0.3) -- optional
+          BUILD_TOOLS_VERSION: ${{ steps.build_tools_version.outputs.version }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: android apk
-          path: build/v${{ env.RELEASE_VERSION }}.apk
+          path: build/v${{ env.RELEASE_VERSION }}-signed.apk
 
       - uses: actions/upload-artifact@v4
         with:
@@ -75,7 +95,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/v${{ env.RELEASE_VERSION }}.apk
+          asset_path: build/v${{ env.RELEASE_VERSION }}-signed.apk
           asset_name: v${{ env.RELEASE_VERSION }}.apk
           asset_content_type: application/vnd.android.package-archive
 
@@ -89,4 +109,3 @@ jobs:
           asset_path: build/v${{ env.RELEASE_VERSION }}.aab
           asset_name: v${{ env.RELEASE_VERSION }}.aab
           asset_content_type: application/x-authorware-bin
-
