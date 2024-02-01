@@ -1,6 +1,6 @@
 {
   "name": "safecantonese.ai.app",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "main": "expo-router/entry",
   "license": "GPL-3.0-or-later",
   "scripts": {
