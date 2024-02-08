@@ -33,7 +33,7 @@ export const ModelsMeta = [
         .replace(/^謝謝$/, "");
     },
   },
-  {
+  /*{
     name: "whisper-small-yue-hk",
     downloadUrl:
       "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-small-yue-hk.bin?download=true",
@@ -45,11 +45,29 @@ export const ModelsMeta = [
     },
     no_delete: true,
     filter: (text: string) => {
+      return text*/
+      //  .replace(/謝謝大家[收|觀]看.*/g, "")
+      //  .replace(/謝謝[收|觀]看.*/g, "")
+      //  .replace(/你怎麼會這樣做呢\?/g, "")
+      //  .replace(/我看你還沒進去嗎\?/g, "")
+      //  .replace(/\(.*\)/g, "");
+    // },
+  // },
+  {
+    name: "whisper-small-yue-full",
+    downloadUrl:
+      "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-small-yue-full.bin?download=true",
+    description:
+      "Specialized in transcribing pure Cantonese voice. Voice with English embedded will result in chaotic output. (datasets: common-voice/yue using train,validation,other)",
+    downloadStatus: {
+      completed: true,
+      path: modelPath["whisper-small-yue-full"],
+    },
+    no_delete: true,
+    filter: (text: string) => {
       return text
-        .replace(/謝謝大家[收|觀]看.*/g, "")
-        .replace(/謝謝[收|觀]看.*/g, "")
-        .replace(/你怎麼會這樣做呢\?/g, "")
-        .replace(/我看你還沒進去嗎\?/g, "")
+        .replace(/[多|謝]謝大家[收|觀][看|睇].*/g, "")
+        .replace(/[多|謝]謝[收|觀][看|睇].*/g, "")
         .replace(/\(.*\)/g, "");
     },
   },
