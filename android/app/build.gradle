@@ -86,8 +86,8 @@ android {
         applicationId 'me.wcyat.safecantoneseai'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1800
-        versionName "1.8.0"
+        versionCode 1810
+        versionName "1.8.1"
 
         buildConfigField("boolean", "REACT_NATIVE_UNSTABLE_USE_RUNTIME_SCHEDULER_ALWAYS", (findProperty("reactNative.unstable_useRuntimeSchedulerAlways") ?: true).toString())
     }
