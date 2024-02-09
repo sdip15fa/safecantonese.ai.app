@@ -46,19 +46,19 @@ export const ModelsMeta = [
     no_delete: true,
     filter: (text: string) => {
       return text*/
-      //  .replace(/謝謝大家[收|觀]看.*/g, "")
-      //  .replace(/謝謝[收|觀]看.*/g, "")
-      //  .replace(/你怎麼會這樣做呢\?/g, "")
-      //  .replace(/我看你還沒進去嗎\?/g, "")
-      //  .replace(/\(.*\)/g, "");
-    // },
+  //  .replace(/謝謝大家[收|觀]看.*/g, "")
+  //  .replace(/謝謝[收|觀]看.*/g, "")
+  //  .replace(/你怎麼會這樣做呢\?/g, "")
+  //  .replace(/我看你還沒進去嗎\?/g, "")
+  //  .replace(/\(.*\)/g, "");
+  // },
   // },
   {
     name: "whisper-small-yue-full",
     downloadUrl:
       "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-small-yue-full.bin?download=true",
     description:
-      "Specialized in transcribing pure Cantonese voice. Voice with English embedded will result in chaotic output. (datasets: common-voice/yue using train,validation,other)",
+      "Specialized in transcribing pure Cantonese voice. The model may forcefully translate by pronunciation any English embedded into Cantonese. (datasets: common-voice/yue using train,validation,other)",
     downloadStatus: {
       completed: true,
       path: modelPath["whisper-small-yue-full"],
@@ -68,6 +68,14 @@ export const ModelsMeta = [
       return text
         .replace(/[多|謝]謝大家[收|觀][看|睇].*/g, "")
         .replace(/[多|謝]謝[收|觀][看|睇].*/g, "")
+        .replace(/字幕製作人.*/g, "")
+        .replace(/字幕裏面有幾個字幕呢.*/g, "")
+        .replace(/^多謝大家 拜拜$/, "")
+        .replace(/^拜拜~*$/, "")
+        .replace(
+          /唔知話佢唔應該會嚟租呢個公司啦解決呢個原因呢好似消失咗嘅消息.*/g,
+          ""
+        )
         .replace(/\(.*\)/g, "");
     },
   },
@@ -213,8 +221,7 @@ export default function useModels() {
     return (
       models?.map((model, index) => {
         model.download = async () => {
-          const path =
-            model.downloadStatus?.path || `models/${model.name}.bin`;
+          const path = model.downloadStatus?.path || `models/${model.name}.bin`;
           const download = FileSystem.createDownloadResumable(
             model.downloadUrl,
             path,
