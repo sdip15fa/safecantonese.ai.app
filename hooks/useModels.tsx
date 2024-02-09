@@ -4,6 +4,34 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
 import { modelPath } from "../utils/models";
 
+function filterRepeat(text: string) {
+  let repeatedItem: string | undefined = undefined;
+  return text
+    .split(" ")
+    .map((v) => v.trim())
+    .reduce((prev, curr, index, arr) => {
+      if (!curr) {
+        return prev;
+      }
+      if (repeatedItem) {
+        if (repeatedItem == curr) {
+          return prev;
+        } else {
+          repeatedItem = undefined;
+        }
+      }
+      if (
+        curr.length >= 3 &&
+        arr[index + 1] == curr &&
+        arr[index + 2] == curr &&
+        arr[index + 3] == curr
+      ) {
+        repeatedItem = curr;
+      }
+      return prev ? prev + " " + curr : curr;
+    }, "");
+}
+
 export const ModelsMeta = [
   /*{
     name: "whisper-small-yue",
@@ -24,13 +52,15 @@ export const ModelsMeta = [
     },
     no_delete: true,
     filter: (text: string) => {
-      return text
-        .replace(/\(CC字幕製作.*\)/g, "")
-        .replace(/by bwd6/g, "")
-        .replace(/謝謝大家[收|觀]看.*/g, "")
-        .replace(/\(.*\)/g, "")
-        .replace(/^拜拜$/, "")
-        .replace(/^謝謝$/, "");
+      return filterRepeat(
+        text
+          .replace(/\(CC字幕製作.*\)/g, "")
+          .replace(/by bwd6/g, "")
+          .replace(/謝謝大家[收|觀]看.*/g, "")
+          .replace(/\(.*\)/g, "")
+          .replace(/^拜拜$/, "")
+          .replace(/^謝謝$/, "")
+      );
     },
   },
   /*{
@@ -65,18 +95,20 @@ export const ModelsMeta = [
     },
     no_delete: true,
     filter: (text: string) => {
-      return text
-        .replace(/[多|謝]謝大家[收|觀][看|睇].*/g, "")
-        .replace(/[多|謝]謝[收|觀][看|睇].*/g, "")
-        .replace(/字幕製作人.*/g, "")
-        .replace(/字幕裏面有幾個字幕呢.*/g, "")
-        .replace(/^多謝大家 拜拜$/, "")
-        .replace(/^拜拜~*$/, "")
-        .replace(
-          /唔知話佢唔應該會嚟租呢個公司啦解決呢個原因呢好似消失咗嘅消息.*/g,
-          ""
-        )
-        .replace(/\(.*\)/g, "");
+      return filterRepeat(
+        text
+          .replace(/[多|謝]謝大家[收|觀][看|睇].*/g, "")
+          .replace(/[多|謝]謝[收|觀][看|睇].*/g, "")
+          .replace(/字幕製作人.*/g, "")
+          .replace(/字幕裏面有幾個字幕呢.*/g, "")
+          .replace(/^多謝大家 拜拜$/, "")
+          .replace(/^拜拜~*$/, "")
+          .replace(
+            /唔知話佢唔應該會嚟租呢個公司啦解決呢個原因呢好似消失咗嘅消息.*/g,
+            ""
+          )
+          .replace(/\(.*\)/g, "")
+      );
     },
   },
   {
@@ -91,14 +123,16 @@ export const ModelsMeta = [
     },
     no_delete: true,
     filter: (text: string) => {
-      return text
-        .replace(/你別再問我了.*/g, "")
-        .replace(/請問歷史上有否.*/g, "")
-        .replace(/請問.*嗎(\?)/g, "")
-        .replace(/請問.*呢(\?)/g, "")
-        .replace(/請.*吧(\?)/g, "")
-        .replace(/\(.*\)/g, "")
-        .replace(/^祝$/, "");
+      return filterRepeat(
+        text
+          .replace(/你別再問我了.*/g, "")
+          .replace(/請問歷史上有否.*/g, "")
+          .replace(/請問.*嗎(\?)/g, "")
+          .replace(/請問.*呢(\?)/g, "")
+          .replace(/請.*吧(\?)/g, "")
+          .replace(/\(.*\)/g, "")
+          .replace(/^祝$/, "")
+      );
       // .replace(/梁國雄議員/g, "");
     },
   },
