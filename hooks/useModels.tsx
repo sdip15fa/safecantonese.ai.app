@@ -5,31 +5,10 @@ import * as FileSystem from "expo-file-system";
 import { modelPath } from "../utils/models";
 
 function filterRepeat(text: string) {
-  let repeatedItem: string | undefined = undefined;
   return text
-    .split(" ")
-    .map((v) => v.trim())
-    .reduce((prev, curr, index, arr) => {
-      if (!curr) {
-        return prev;
-      }
-      if (repeatedItem) {
-        if (repeatedItem == curr) {
-          return prev;
-        } else {
-          repeatedItem = undefined;
-        }
-      }
-      if (
-        curr.length >= 3 &&
-        arr[index + 1] == curr &&
-        arr[index + 2] == curr &&
-        arr[index + 3] == curr
-      ) {
-        repeatedItem = curr;
-      }
-      return prev ? prev + " " + curr : curr;
-    }, "");
+    .replace(/(.+)(?:\s+\1){3,}/g, "$1")
+    .replace(/啊{5,}/g, "啊")
+    .replace(/呀{5,}/g, "呀");
 }
 
 export const ModelsMeta = [
