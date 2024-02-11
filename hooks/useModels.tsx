@@ -5,10 +5,11 @@ import * as FileSystem from "expo-file-system";
 import { modelPath } from "../utils/models";
 
 function filterRepeat(text: string) {
-  return text
-    .replace(/(.+)(?:\s+\1){3,}/g, "$1")
-    .replace(/啊{5,}/g, "啊")
-    .replace(/呀{5,}/g, "呀");
+  const repeatRegex = /(.+)(?:\s+\1){3,}/g;
+  while (repeatRegex.test(text)) {
+    text = text.replace(repeatRegex, "$1");
+  }
+  return text.replace(/啊{5,}/g, "啊").replace(/呀{5,}/g, "呀");
 }
 
 export const ModelsMeta = [
