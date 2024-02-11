@@ -29,7 +29,9 @@ export default function Page() {
               .split(" ")
               .map((s) => s.trim())
               .filter(Boolean)
-              .some((s) => v.result?.result.includes(s))
+              .some(
+                (s) => v.result?.result.includes(s) || v.fileName?.includes(s)
+              )
           ),
         ]);
       } else {
@@ -98,7 +100,9 @@ export default function Page() {
                 )}
                 {item.shareData && (
                   <Badge
-                    label={`External: ${item.shareData.replace("content://", "").split("/")[0]}`}
+                    label={`External: ${
+                      item.shareData.replace("content://", "").split("/")[0]
+                    }`}
                     style={{ marginHorizontal: 10, marginVertical: 5 }}
                     backgroundColor={Colors.purple30}
                   />
