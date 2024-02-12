@@ -43,7 +43,7 @@ export const ModelsMeta = [
       );
     },
   },
-  /*{
+  {
     name: "whisper-small-yue-hk",
     downloadUrl:
       "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-small-yue-hk.bin?download=true",
@@ -55,15 +55,17 @@ export const ModelsMeta = [
     },
     no_delete: true,
     filter: (text: string) => {
-      return text*/
-  //  .replace(/謝謝大家[收|觀]看.*/g, "")
-  //  .replace(/謝謝[收|觀]看.*/g, "")
-  //  .replace(/你怎麼會這樣做呢\?/g, "")
-  //  .replace(/我看你還沒進去嗎\?/g, "")
-  //  .replace(/\(.*\)/g, "");
-  // },
-  // },
-  {
+      return filterRepeat(
+        text
+          .replace(/謝謝大家[收|觀]看.*/g, "")
+          .replace(/謝謝[收|觀]看.*/g, "")
+          .replace(/你怎麼會這樣做呢\?/g, "")
+          .replace(/我看你還沒進去嗎\?/g, "")
+          .replace(/\(.*\)/g, "")
+      );
+    },
+  },
+  /*{
     name: "whisper-small-yue-full",
     downloadUrl:
       "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-small-yue-full.bin?download=true",
@@ -76,21 +78,21 @@ export const ModelsMeta = [
     no_delete: true,
     filter: (text: string) => {
       return filterRepeat(
-        text
-          .replace(/[多|謝]謝大家[收|觀][看|睇].*/g, "")
-          .replace(/[多|謝]謝[收|觀][看|睇].*/g, "")
-          .replace(/字幕製作人.*/g, "")
-          .replace(/字幕裏面有幾個字幕呢.*/g, "")
-          .replace(/^多謝大家 拜拜$/, "")
-          .replace(/^拜拜~*$/, "")
-          .replace(
-            /唔知話佢唔應該會嚟租呢個公司啦解決呢個原因呢好似消失咗嘅消息.*/g,
-            ""
-          )
-          .replace(/\(.*\)/g, "")
-      );
-    },
-  },
+        text*/
+          //.replace(/[多|謝]謝大家[收|觀][看|睇].*/g, "")
+          //.replace(/[多|謝]謝[收|觀][看|睇].*/g, "")
+          //.replace(/字幕製作人.*/g, "")
+          //.replace(/字幕裏面有幾個字幕呢.*/g, "")
+          //.replace(/^多謝大家 拜拜$/, "")
+          //.replace(/^拜拜~*$/, "")
+          //.replace(
+          //  /唔知話佢唔應該會嚟租呢個公司啦解決呢個原因呢好似消失咗嘅消息.*/g,
+          //  ""
+          //)
+          //.replace(/\(.*\)/g, "")
+      //);
+    //},
+  //},
   {
     name: "whisper-base-yue-hk-mdcc",
     downloadUrl:
