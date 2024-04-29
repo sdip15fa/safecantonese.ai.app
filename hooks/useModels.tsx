@@ -43,7 +43,7 @@ export const ModelsMeta = [
       );
     },
   },
-  {
+  /*{
     name: "whisper-small-yue-hk",
     downloadUrl:
       "https://huggingface.co/safecantonese/ggml-models/resolve/main/whisper-small-yue-hk.bin?download=true",
@@ -56,15 +56,15 @@ export const ModelsMeta = [
     no_delete: true,
     filter: (text: string) => {
       return filterRepeat(
-        text
-          .replace(/謝謝大家[收|觀]看.*/g, "")
-          .replace(/謝謝[收|觀]看.*/g, "")
-          .replace(/你怎麼會這樣做呢\?/g, "")
-          .replace(/我看你還沒進去嗎\?/g, "")
-          .replace(/\(.*\)/g, "")
-      );
-    },
-  },
+        text*/
+          //.replace(/謝謝大家[收|觀]看.*/g, "")
+          //.replace(/謝謝[收|觀]看.*/g, "")
+          //.replace(/你怎麼會這樣做呢\?/g, "")
+          //.replace(/我看你還沒進去嗎\?/g, "")
+          //.replace(/\(.*\)/g, "")
+      //);
+    //},
+  //},
   /*{
     name: "whisper-small-yue-full",
     downloadUrl:
