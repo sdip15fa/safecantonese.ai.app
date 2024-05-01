@@ -12,6 +12,7 @@ import { RootContext } from "../context/RootContext";
 import RNFS from "react-native-fs";
 import BackgroundService from "react-native-background-actions";
 import { Platform } from "react-native";
+import { modelPath } from "../utils/models";
 
 export function useTranscribe() {
   const { models } = useContext(RootContext);
@@ -110,7 +111,14 @@ export function useTranscribe() {
         };
 
         const whisperContext = await initWhisper({
-          filePath: model.downloadStatus?.path,
+          filePath:
+            Platform.OS === "android"
+              ? model.downloadStatus?.path
+              : modelPath[
+                  model.name as
+                    | "whisper-small-yue-mdcc"
+                    | "whisper-base-yue-hk-mdcc"
+                ],
           isBundleAsset: Platform.OS === "android",
         });
 
