@@ -11,6 +11,7 @@ import uuid from "react-native-uuid";
 import { RootContext } from "../context/RootContext";
 import RNFS from "react-native-fs";
 import BackgroundService from "react-native-background-actions";
+import { Platform } from "react-native";
 
 export function useTranscribe() {
   const { models } = useContext(RootContext);
@@ -110,7 +111,7 @@ export function useTranscribe() {
 
         const whisperContext = await initWhisper({
           filePath: model.downloadStatus?.path,
-          isBundleAsset: true,
+          isBundleAsset: Platform.OS === "android",
         });
 
         const recordId = String(uuid.v4());

@@ -9,7 +9,7 @@ are transcribed right in your device without ever leaving it.
 
 ## Download
 
-**Warning**: The app on play store work out of the box. If you wish to build yourself or use apks in github releases, you must add the models into the assets/models directory into the apk and re-sign it by yourself. If you don't know what it means, use google play.
+**Warning**: The app on play store & github release apks after v1.7.0 work out of the box. If you wish to build yourself or use apks in github releases （prior to version 1.7.0), you must add the models into the assets/models directory into the apk and re-sign it by yourself. If you don't know what it means, use google play.
 
 [![Play Store](./images/google-play-badge.png)](https://play.google.com/store/apps/details?id=me.wcyat.safecantoneseai)
 
