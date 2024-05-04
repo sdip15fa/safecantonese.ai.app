@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@config-plugins/ffmpeg-kit-react-native": "^6.0.0",
+    "@expo/config-plugins": "^7.8.0",
     "@react-native-async-storage/async-storage": "1.21.0",
     "@react-native-community/blur": "^4.3.2",
     "@react-native-community/datetimepicker": "7.6.1",
@@ -56,7 +57,6 @@
     "whisper.rn": "^0.3.9"
   },
   "resolutions": {
-    "@expo/config-plugins": "~7.2.2",
     "react-refresh": "~0.14.0",
     "wrap-ansi": "7.0.0",
     "string-width": "4.1.0"
