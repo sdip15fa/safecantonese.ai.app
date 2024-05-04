@@ -1,7 +1,7 @@
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 
-min_ios_versions_supported = ['13.0', min_ios_version_supported]
+min_ios_versions_supported = ['13.4', min_ios_version_supported]
 index_of_max = min_ios_versions_supported.each_with_index.max_by { |number, _| number.to_f }[1]
 platform :ios, min_ios_versions_supported[index_of_max]
 
