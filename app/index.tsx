@@ -1,28 +1,27 @@
+/**
+ * Home Screen - Main Transcription Interface
+ * Revamped with Material Design 3
+ */
+
 import { useCallback, useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  Button,
-  Card,
-  Colors,
-  Dialog,
-  PanningProvider,
-  ProgressBar,
-  Text,
-  View,
-} from "react-native-ui-lib";
+import { ScrollView, View, StyleSheet, Share } from "react-native";
+import { Portal, Dialog as PaperDialog, IconButton, ProgressBar as PaperProgressBar } from 'react-native-paper';
 import { AppContext } from "../context/AppContext";
-import { ScrollView } from "react-native-gesture-handler";
 import * as DocumentPicker from "expo-document-picker";
 import * as Clipboard from "expo-clipboard";
-import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Share } from "react-native";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
 import RNFS from "react-native-fs";
 import { Tip, showTip } from "react-native-tip";
 import AudioPlayer from "../components/AudioPlayer";
 import { RootContext } from "../context/RootContext";
+import { useTheme } from "../theme/ThemeContext";
+import { Surface, Text, Card, Button } from "../components/themed";
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 export default function Page() {
+  const { theme } = useTheme();
   const {
     transcribe,
     result,
@@ -94,36 +93,60 @@ export default function Page() {
     }
   }, [transcribe, lastShareData, shareIntent]);
 
+  const transcribedText = result?.result || segments?.segments
+    .map((v) => v.text.trim())
+    .filter(Boolean)
+    .join("\n");
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Dialog
-        visible={!!(error && !error?.dismissed)}
-        panDirection={PanningProvider.Directions.DOWN}
-      >
-        <View
-          style={{
-            backgroundColor: "#fff",
-            borderRadius: 10,
-          }}
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      {/* Error Dialog */}
+      <Portal>
+        <PaperDialog
+          visible={!!(error && !error?.dismissed)}
+          onDismiss={() => error && setError({ ...error, dismissed: true })}
+          style={{ backgroundColor: theme.colors.surface }}
         >
-          <Text text60 style={{ margin: 10 }}>
+          <PaperDialog.Icon icon="alert-circle" color={theme.colors.error} />
+          <PaperDialog.Title style={{ color: theme.colors.onSurface }}>
             Error
-          </Text>
-          <Text text80 style={{ margin: 10 }}>
-            {error?.error}
-          </Text>
-          <Button
-            style={{ margin: 10 }}
-            onPress={() => {
-              if (error) setError({ ...error, dismissed: true });
-            }}
-            label="Dismiss"
-            fullWidth={false}
-          />
-        </View>
-      </Dialog>
-      <ScrollView style={{ paddingHorizontal: 24 }}>
-        <View style={{ flex: 1, margin: 5, marginHorizontal: 10 }}>
+          </PaperDialog.Title>
+          <PaperDialog.Content>
+            <Text variant="bodyMedium" color="onSurface">
+              {error?.error}
+            </Text>
+          </PaperDialog.Content>
+          <PaperDialog.Actions>
+            <Button
+              variant="text"
+              onPress={() => error && setError({ ...error, dismissed: true })}
+            >
+              Dismiss
+            </Button>
+          </PaperDialog.Actions>
+        </PaperDialog>
+      </Portal>
+
+      <ScrollView contentContainerStyle={styles.content}>
+        {/* Header Section */}
+        <Animated.View entering={FadeInDown.duration(400)}>
+          <Surface variant="container" style={styles.headerSection}>
+            <MaterialIcons
+              name="audiotrack"
+              size={48}
+              color={theme.colors.primary}
+            />
+            <Text variant="headlineSmall" color="onSurface" style={styles.headerTitle}>
+              Cantonese Transcription
+            </Text>
+            <Text variant="bodyMedium" color="onSurfaceVariant" style={styles.headerSubtitle}>
+              Privacy-focused on-device speech-to-text
+            </Text>
+          </Surface>
+        </Animated.View>
+
+        {/* Help Tip */}
+        <Animated.View entering={FadeInDown.duration(400).delay(100)}>
           <Tip
             id="help"
             body={`To transcribe, select a file from your device using the "Select File" button, then press the "Transcribe" button. Alternatively, you can share an audio file from any application.
@@ -136,195 +159,282 @@ Once the "Transcribing..." notification appears, you are free to exit the app an
             showItemPulseAnimation={false}
           >
             <Button
-              label="Help"
-              color={Colors.purple30}
-              style={{
-                backgroundColor: Colors.transparent,
-                borderColor: Colors.purple30,
-                borderWidth: 0.5,
-                alignSelf: "flex-end",
-                marginBottom: 10,
-              }}
+              variant="outlined"
+              size="small"
               onPress={() => showTip("help")}
-              text80
-              iconSource={(props) => (
-                <MaterialIcons
-                  name="help"
-                  size={22}
-                  style={{ marginRight: 3 }}
-                  color={Colors.purple30}
-                  {...props}
-                />
-              )}
-            />
+              style={styles.helpButton}
+              icon={<MaterialIcons name="help-outline" size={18} color={theme.colors.primary} />}
+            >
+              Help
+            </Button>
           </Tip>
-          <Button
-            style={{ marginVertical: 10 }}
-            iconSource={(props) => (
-              <MaterialIcons
-                name="audiotrack"
-                size={22}
-                style={{ marginRight: 5 }}
-                color={Colors.white}
-                {...props}
-              />
-            )}
-            onPress={() => {
-              DocumentPicker.getDocumentAsync({
-                type: "audio/*",
-                copyToCacheDirectory: true,
-                multiple: false,
-              }).then((result) => {
-                if (!result.canceled) {
-                  setFile(result.assets[0]);
-                  // setLastShareData(null);
-                }
-              });
-            }}
-            label="Select File"
-          />
-          {!!file && <Text style={{ margin: 10 }}>File: {file.name}</Text>}
-          {file?.uri && <AudioPlayer audioUri={file.uri} />}
-          <Button
-            backgroundColor={
-              transcribing ? Colors.$iconDanger : Colors.$iconSuccess
-            }
-            style={{ marginVertical: 10 }}
-            disabled={!transcribe || transcribing || !file}
-            iconSource={(props) =>
-              transcribing ? (
-                <MaterialIcons
-                  name="stop"
-                  color={Colors.white}
-                  size={24}
-                  style={{ marginRight: 5 }}
-                  {...props}
-                />
-              ) : (
-                <Entypo
-                  name="text"
-                  size={24}
-                  color={Colors.white}
-                  style={{ marginRight: 5 }}
-                  {...props}
-                />
-              )
-            }
-            onPress={() => {
-              if (transcribing && stop) {
-                return stop();
-              }
-              if (file?.uri && transcribe) {
-                startTranscribe(file.uri, file.name);
-              }
-            }}
-            label={transcribing ? "Transcribing..." : "Transcribe"}
-          />
-          {(transcribing || typeof result?.result === "string") && (
-            <>
-              <Text style={{ marginHorizontal: 10, marginVertical: 5 }}>
-                Progress: {progress}%
+        </Animated.View>
+
+        {/* File Selection Card */}
+        <Animated.View entering={FadeInDown.duration(400).delay(200)}>
+          <Card variant="elevated" style={styles.card}>
+            <View style={styles.cardHeader}>
+              <MaterialIcons name="folder-open" size={24} color={theme.colors.primary} />
+              <Text variant="titleMedium" color="onSurface" style={styles.cardTitle}>
+                Select Audio File
               </Text>
-              <ProgressBar
-                style={{ marginHorizontal: 10, marginVertical: 5 }}
-                progress={progress}
-                progressColor={Colors.purple10}
-              />
-              {inBackground && (
-                <Text
-                  style={{
-                    marginHorizontal: 10,
-                    marginVertical: 5,
-                  }}
-                >
-                  You can now switch to other apps while waiting for the result,
-                  but DO NOT close this app.
+            </View>
+
+            <Button
+              variant="filled"
+              onPress={() => {
+                DocumentPicker.getDocumentAsync({
+                  type: "audio/*",
+                  copyToCacheDirectory: true,
+                  multiple: false,
+                }).then((result) => {
+                  if (!result.canceled) {
+                    setFile(result.assets[0]);
+                  }
+                });
+              }}
+              icon={<MaterialIcons name="upload-file" size={20} color={theme.colors.onPrimary} />}
+              style={styles.button}
+            >
+              Choose File
+            </Button>
+
+            {file && (
+              <Surface variant="containerHigh" style={styles.fileInfo}>
+                <Ionicons name="musical-notes" size={20} color={theme.colors.primary} />
+                <Text variant="bodyMedium" color="onSurface" style={styles.fileName}>
+                  {file.name}
                 </Text>
-              )}
-              {(result?.result || segments?.segments.length) && (
-                <Card style={{ marginVertical: 10 }}>
-                  <Card.Section
-                    style={{ padding: 10 }}
-                    content={[
-                      {
-                        text:
-                          result?.result ||
-                          segments?.segments
-                            .map((v) => v.text.trim())
-                            .filter(Boolean)
-                            .join("\n"),
-                        text70: true,
-                      },
-                    ]}
+              </Surface>
+            )}
+
+            {file?.uri && (
+              <View style={styles.audioPlayerContainer}>
+                <AudioPlayer audioUri={file.uri} />
+              </View>
+            )}
+          </Card>
+        </Animated.View>
+
+        {/* Transcribe Button */}
+        {file && (
+          <Animated.View entering={FadeInDown.duration(400).delay(300)}>
+            <Button
+              variant={transcribing ? "tonal" : "filled"}
+              size="large"
+              disabled={!transcribe || transcribing || !file}
+              loading={transcribing}
+              onPress={() => {
+                if (transcribing && stop) {
+                  return stop();
+                }
+                if (file?.uri && transcribe) {
+                  startTranscribe(file.uri, file.name);
+                }
+              }}
+              icon={
+                transcribing ? (
+                  <MaterialIcons name="stop" size={24} color={theme.colors.onSecondaryContainer} />
+                ) : (
+                  <MaterialIcons name="transcribe" size={24} color={theme.colors.onPrimary} />
+                )
+              }
+              style={styles.transcribeButton}
+            >
+              {transcribing ? "Transcribing..." : "Transcribe"}
+            </Button>
+          </Animated.View>
+        )}
+
+        {/* Progress Section */}
+        {(transcribing || typeof result?.result === "string") && (
+          <Animated.View entering={FadeInUp.duration(400)}>
+            <Card variant="outlined" style={styles.card}>
+              <View style={styles.progressHeader}>
+                <Text variant="titleMedium" color="primary">
+                  Progress
+                </Text>
+                <Text variant="titleLarge" color="primary" style={styles.progressText}>
+                  {progress}%
+                </Text>
+              </View>
+
+              <PaperProgressBar
+                progress={progress / 100}
+                color={theme.colors.primary}
+                style={styles.progressBar}
+              />
+
+              {inBackground && (
+                <Surface variant="containerHigh" style={styles.infoBox}>
+                  <MaterialIcons
+                    name="info-outline"
+                    size={20}
+                    color={theme.colors.primary}
                   />
-                </Card>
+                  <Text variant="bodySmall" color="onSurfaceVariant" style={styles.infoText}>
+                    You can now switch to other apps while waiting for the result, but DO NOT close this app.
+                  </Text>
+                </Surface>
               )}
-              {!!(result?.result || segments?.segments.length) && (
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    flexWrap: "wrap",
-                    alignItems: "center",
+            </Card>
+          </Animated.View>
+        )}
+
+        {/* Result Card */}
+        {transcribedText && (
+          <Animated.View entering={FadeInUp.duration(400).delay(100)}>
+            <Card variant="filled" style={styles.card}>
+              <View style={styles.cardHeader}>
+                <MaterialIcons name="description" size={24} color={theme.colors.primary} />
+                <Text variant="titleMedium" color="onSurface" style={styles.cardTitle}>
+                  Transcription Result
+                </Text>
+              </View>
+
+              <Surface variant="containerLowest" style={styles.resultText}>
+                <ScrollView style={styles.resultScrollView}>
+                  <Text variant="bodyLarge" color="onSurface" selectable>
+                    {transcribedText}
+                  </Text>
+                </ScrollView>
+              </Surface>
+
+              <View style={styles.actionButtons}>
+                <Button
+                  variant="tonal"
+                  onPress={() => {
+                    if (transcribedText) {
+                      Clipboard.setStringAsync(transcribedText);
+                    }
                   }}
+                  icon={<Ionicons name="copy-outline" size={18} color={theme.colors.onSecondaryContainer} />}
+                  style={styles.actionButton}
                 >
-                  <Button
-                    label="Copy"
-                    onPress={() => {
-                      if (result?.result) {
-                        Clipboard.setStringAsync(result?.result);
-                      } else if (segments) {
-                        Clipboard.setStringAsync(
-                          segments.segments
-                            .map((v) => v.text)
-                            .filter(Boolean)
-                            .join("\n")
-                        );
-                      }
-                    }}
-                    style={{ margin: 5 }}
-                    iconSource={(props) => (
-                      <Ionicons
-                        name="copy"
-                        style={{ marginRight: 5, color: Colors.white }}
-                        size={14}
-                        {...props}
-                      />
-                    )}
-                  />
-                  <Button
-                    label="Share"
-                    style={{ margin: 5 }}
-                    onPress={() => {
-                      if (result?.result) {
-                        Share.share({
-                          message: result?.result,
-                        });
-                      } else if (segments) {
-                        Share.share({
-                          message: segments.segments
-                            .map((v) => v.text)
-                            .filter(Boolean)
-                            .join("\n"),
-                        });
-                      }
-                    }}
-                    iconSource={(props) => (
-                      <Ionicons
-                        name="share"
-                        style={{ marginRight: 5, color: Colors.white }}
-                        size={14}
-                        {...props}
-                      />
-                    )}
-                  />
-                </View>
-              )}
-            </>
-          )}
-        </View>
+                  Copy
+                </Button>
+
+                <Button
+                  variant="tonal"
+                  onPress={() => {
+                    if (transcribedText) {
+                      Share.share({ message: transcribedText });
+                    }
+                  }}
+                  icon={<Ionicons name="share-outline" size={18} color={theme.colors.onSecondaryContainer} />}
+                  style={styles.actionButton}
+                >
+                  Share
+                </Button>
+              </View>
+            </Card>
+          </Animated.View>
+        )}
+
+        <View style={styles.bottomSpacer} />
       </ScrollView>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+    padding: 16,
+  },
+  headerSection: {
+    padding: 24,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  headerTitle: {
+    marginTop: 12,
+    textAlign: 'center',
+  },
+  headerSubtitle: {
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  helpButton: {
+    alignSelf: 'flex-end',
+    marginBottom: 16,
+  },
+  card: {
+    padding: 16,
+    marginBottom: 16,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  cardTitle: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  button: {
+    marginBottom: 12,
+  },
+  fileInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  fileName: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  audioPlayerContainer: {
+    marginTop: 16,
+  },
+  transcribeButton: {
+    marginBottom: 16,
+  },
+  progressHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  progressText: {
+    fontWeight: '600',
+  },
+  progressBar: {
+    height: 8,
+    borderRadius: 4,
+  },
+  infoBox: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 16,
+  },
+  infoText: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  resultText: {
+    padding: 16,
+    borderRadius: 8,
+    maxHeight: 300,
+    marginBottom: 16,
+  },
+  resultScrollView: {
+    maxHeight: 268,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  actionButton: {
+    flex: 1,
+  },
+  bottomSpacer: {
+    height: 24,
+  },
+});
